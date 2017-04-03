@@ -1,0 +1,87 @@
+{
+  "pages": [
+    "page/carpeople/carpeople",
+    "page/peoplecar/peoplecar",
+    "page/publish/publish",
+    "page/my/my",
+    "example/index",
+
+    "example/button/button",
+    "example/list/list",
+    "example/input/input",
+    "example/slider/slider",
+    "example/uploader/uploader",
+    "example/article/article",
+    "example/badge/badge",
+    "example/flex/flex",
+    "example/footer/footer",
+    "example/gallery/gallery",
+    "example/grid/grid",
+    "example/icons/icons",
+    "example/loadmore/loadmore",
+    "example/panel/panel",
+    "example/preview/preview",
+    "example/progress/progress",
+
+    "example/actionsheet/actionsheet",
+    "example/dialog/dialog",
+    "example/msg/msg",
+    "example/msg/msg_success",
+    "example/msg/msg_fail",
+    "example/picker/picker",
+    "example/toast/toast",
+
+    "example/navbar/navbar",
+    "example/tabbar/tabbar",
+
+    "example/searchbar/searchbar"
+  ],
+  "tabBar": {
+    "color": "#7A7E83",
+    "selectedColor": "#3cc51f",
+    "borderStyle": "black",
+    "backgroundColor": "#ffffff",
+    "list": [{
+      "pagePath": "page/carpeople/carpeople",
+      "iconPath": "images/people.png",
+      "selectedIconPath": "images/peoples.png",
+      "text": "人找车"
+    }, {
+      "pagePath": "page/peoplecar/peoplecar",
+      "iconPath": "images/car.png",
+      "selectedIconPath": "images/cars.png",
+      "text": "车找人"
+    },
+    {
+      "pagePath": "page/publish/publish",
+      "iconPath": "images/publish.png",
+      "selectedIconPath": "images/publishs.png",
+      "text": "发布"
+    },
+    {
+      "pagePath": "page/my/my",
+      "iconPath": "images/people.png",
+      "selectedIconPath": "images/peoples.png",
+      "text": "我的"
+    },
+    {
+      "pagePath": "example/index",
+     
+      "text": "官方例子"
+    }
+    ]
+  },
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "WeUI for 小程序",
+    "navigationBarBackgroundColor": "#f8f8f8",
+    "backgroundColor": "#f8f8f8"
+  },
+  "networkTimeout": {
+    "request": 10000,
+    "connectSocket": 10000,
+    "uploadFile": 10000,
+    "downloadFile": 10000
+  },
+  "debug": true
+}
