@@ -1,1 +1,16 @@
-/* page/peoplecar/peoplecar.wxss */
+.seltitle::after {
+content:"  ";
+display:inline-block;
+height:6px;
+width:6px;
+border-width:0px 2px 2px 0;
+border-color:#C8C8CD;
+border-style:solid;
+/*-webkit-transform:matrix(0.71, 0.87, -0.87, 0.87, 0, 0);*/
+transform:matrix(0.71,0.71,-0.71,0.71,0,0);
+position:relative;
+top:-2px;
+margin-top:-4px;
+right:2px;
+
+}
