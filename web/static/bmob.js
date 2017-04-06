@@ -1,10 +1,7 @@
 /*!
  * bmob JavaScript SDK
- * Version: 1.0.0
- * Built:  2014 
  * http://www.bmob.cn
- *
- * Copyright 2014 Bmob, Inc.
+ * Copyright Bmob, Inc.
  * The Bmob JavaScript SDK is freely distributable under the MIT license.
  *
  * Includes: Underscore.js
@@ -305,7 +302,7 @@
     var rand;
     var index = 0;
     var shuffled = [];
-    each(obj, function(value) {
+    each(obj, function(value) {_request
       rand = _.random(index++);
       shuffled[index - 1] = shuffled[rand];
       shuffled[rand] = value;
@@ -1334,6 +1331,7 @@
 
   // Set the server for Bmob to talk to.
   Bmob.serverURL = "https://api.bmob.cn";
+  // Bmob.serverURL = "http://192.168.1.60:8080";
   Bmob.fileURL = "http://file.bmob.cn";
   
   // Check whether we are running in Node.js.
@@ -1351,10 +1349,6 @@
    * @param {String} masterKey (optional) 你的 bmob Master Key. 
    */
   Bmob.initialize = function(applicationId, applicationKey, masterKey) {
-    if (masterKey) {
-      throw "Bmob.initialize() was passed a Master Key, which is only " +
-        "allowed from within Node.js.";
-    }
     Bmob._initialize(applicationId, applicationKey,masterKey);
   };
 
@@ -1369,7 +1363,7 @@
     Bmob.applicationId = applicationId;
     Bmob.applicationKey = applicationKey;
     Bmob.masterKey = masterKey;
-    Bmob._useMasterKey = false;
+    Bmob._useMasterKey = true;
   };
 
   
@@ -1511,7 +1505,7 @@
 
         // alert(tempResponse.length);
 
-        if (xhr.status == 200 && tempResponse['code'] && tempResponse['error']  ) 
+        if (xhr.status == 200 && tempResponse && tempResponse['code'] && tempResponse['error']  ) 
 		{
 		
                  xhr.status=400; 
@@ -1569,28 +1563,15 @@
       throw "You must specify a key using Bmob.initialize";
     }
 
-
-    if (route !== "batch" &&
-        route !== "classes" &&
-        route !== "files" &&
-        route !== "functions" &&
-        route !== "login" &&
-        route !== "push" &&
-        route !== "search/select" &&
-        route !== "images/thumbnail" &&
-        route !== "images/watermark" &&
-        route !== "requestPasswordReset" &&
-        route !== "requestEmailVerify" &&
-        route !== "users" &&
-        !(/users\/[^\/]+\/friendship\/[^\/]+/.test(route))) {
-      throw "Bad route: '" + route + "'.";
-    }
-
     var url = Bmob.serverURL;
     if (url.charAt(url.length - 1) !== "/") {
       url += "/";
     }
-    url += "1/" + route;
+  	if(  route.indexOf("2/")<0 ){  //如果是使用了2版接口，则不需要加上路由
+  		url += "1/" + route;
+  	}else{
+      url += route;
+    }
     if (className) {
       url += "/" + className;
     }
@@ -1611,8 +1592,10 @@
 	
     dataObject._ApplicationId = Bmob.applicationId;
     dataObject._RestKey = Bmob.applicationKey;
-    if(Bmob._useMasterKey)
-        dataObject._MasterKey = Bmob.masterKey;
+    if(Bmob._useMasterKey && Bmob.masterKey != undefined) {
+		 dataObject._MasterKey = Bmob.masterKey;
+	}
+       
     dataObject._ClientVersion = Bmob.VERSION;
     dataObject._InstallationId = Bmob._getInstallationId();
 	
@@ -1703,17 +1686,18 @@
     if (value instanceof Bmob.Op) {
       return value.toJSON();
     }
+
     if (value instanceof Bmob.File) {
       if (!value.url()) {
         throw "Tried to save an object containing an unsaved file.";
       }
       return {
-        __type: "File",
-        id:  value.id,
-        name: value.name(),
-        url: value.url()
+        "__type": "File",
+        "cdn":  value.cdn(),
+        "filename": value.name(),
+        "url": value.url()
       };
-    }
+    }	
     if (_.isObject(value)) {
       var output = {};
       Bmob._objectEach(value, function(v, k) {
@@ -1744,7 +1728,7 @@
     }
     if (value instanceof Bmob.File) {
       return value;
-    }
+    }	
     if (value instanceof Bmob.Op) {
       return value;
     }
@@ -1797,8 +1781,16 @@
       // file._metaData = value.metaData || {};
       // file._url = value.url;
       // file.id = value.objectId;
+	  if( value.url != undefined && value.url != null ){ 
 
-      var file={"_name":value.filename,"_url":Bmob.fileURL+"/"+value.url,"_group":value.group};
+		  if( value.url.indexOf("http")>=0 ){
+			   var file={"_name":value.filename,"_url":value.url,"_group":value.group};
+		  }else{
+			   var file={"_name":value.filename,"_url":Bmob.fileURL+"/"+value.url,"_group":value.group};
+		  }
+	  } else { //用cdn上传的文件
+		  var file={"_name":value.filename,"_url":value.url,"_group":value.group};
+	  }
 
       return file;
     }
@@ -3714,6 +3706,7 @@
 
 }(this));
 
+
 /*jshint bitwise:false *//*global FileReader: true, File: true */
 (function(root) {
   root.Bmob = root.Bmob || {};
@@ -3778,6 +3771,29 @@
 
   };  
 
+  var utf16to8 = function(str) {
+    var out, i, len, c;
+
+
+    out = "";
+    len = str.length;
+    for(i = 0; i < len; i++) {
+      c = str.charCodeAt(i);
+      if ((c >= 0x0001) && (c <= 0x007F)) {
+        out += str.charAt(i);
+      } else if (c > 0x07FF) {
+        out += String.fromCharCode(0xE0 | ((c >> 12) & 0x0F));
+        out += String.fromCharCode(0x80 | ((c >>  6) & 0x3F));
+        out += String.fromCharCode(0x80 | ((c >>  0) & 0x3F));
+      } else {
+        out += String.fromCharCode(0xC0 | ((c >>  6) & 0x1F));
+        out += String.fromCharCode(0x80 | ((c >>  0) & 0x3F));
+      }
+    }
+    return out;
+
+
+  };
 
   // A list of file extensions to mime types as found here:
   // http://stackoverflow.com/questions/58510/using-net-how-can-you-find-the-
@@ -4029,7 +4045,7 @@
    */
   Bmob.File = function(name, data, type) {
     // this._name = name;
-    this._name = encodeBase64(name);
+    this._name = encodeBase64(utf16to8(name));
     // this._name = "aGVsbG8udHh0";
     var currentUser = Bmob.User.current();
     this._metaData = {
@@ -4066,22 +4082,31 @@
       return this._name;
     },
 
+    setName: function(name) {
+      this._name=name;
+    },	
+	
     /**
      * Gets the url of the file. It is only available after you save the file or
      * after you get the file from a Bmob.Object.
      * @return {String}
      */
     url: function() {
-      return Bmob.fileURL+"/"+this._url;
+	  return this._url;
     },
 
+    setUrl: function(url) {
+	  this._url=url;
+    },
+	
+	
     /**
      * Gets the group of the file. It is only available after you save the file or
      * after you get the file from a Bmob.Object.
      * @return {String}
      */
-    group: function() {
-      return this._group;
+    cdn: function() {
+      return this._cdn;
     },
 
     /**
@@ -4114,16 +4139,16 @@
      *     completes.
      */
     destroy: function(options){
-      if(!this._url && !this._group )
-        return Bmob.Promise.error('The file url and group is not eixsts.')._thenRunCallbacks(options);
+      if(!this._url && !this._cdn )
+        return Bmob.Promise.error('The file url and cdn is not eixsts.')._thenRunCallbacks(options);
       
       var data = {
-              group: this._group,
+              cdn: this._cdn,
               _ContentType: "application/json",
               url: this._url,
               metaData: self._metaData,
             };
-      var request = Bmob._request("files", null, null, 'DELETE',data);
+      var request = Bmob._request("2/files", null, null, 'DELETE',data);
       return request._thenRunCallbacks(options);
     },
 
@@ -4146,12 +4171,12 @@
             if(!self._metaData.size){
               self._metaData.size = base64.length;
             }
-            return Bmob._request("files", self._name, null, 'POST', data);
+            return Bmob._request("2/files", self._name, null, 'POST', data);
           }).then(function(response) {
 
             self._name = response.filename;
             self._url = response.url;
-            self._group = response.group;
+            self._cdn = response.cdn;
 
             return self;
           });
@@ -4164,6 +4189,8 @@
   };
 
 }(this));
+
+
 
 // Bmob.Object is analogous to the Java BmobObject.
 // It also implements the same interface as a Backbone model.
@@ -4598,7 +4625,7 @@
       var value = this.attributes[key];
       if (_.isObject(value) &&
           !(value instanceof Bmob.Object) &&
-          !(value instanceof Bmob.File)) {
+          !(value instanceof Bmob.File) ) {
         value = value.toJSON ? value.toJSON() : value;
         var json = JSON.stringify(value);
         if (this._hashedJSON[key] !== json) {
@@ -5486,6 +5513,7 @@
         }
         return;
       }
+      
     });
   };
 
@@ -7454,7 +7482,17 @@
      * @return {Bmob.Query} 返回查询对象，因此可以使用链式调用。
      */
     ascending: function(key) {
-      this._order = key;
+      
+    if( Bmob._isNullOrUndefined(this._order) ){
+        this._order = key;
+      } else {
+        this._order = this._order + ","+ key;
+      }
+      return this;
+    },
+
+    cleanOrder: function(key) {
+      this._order = null;
       return this;
     },
 
@@ -7465,7 +7503,12 @@
      * @return {Bmob.Query} 返回查询对象，因此可以使用链式调用。
      */
     descending: function(key) {
-      this._order = "-" + key;
+    if( Bmob._isNullOrUndefined(this._order) ){
+        this._order = "-" + key;
+      } else {
+        this._order = this._order + ",-"+ key;
+      }      
+      
       return this;
     },
 
@@ -8044,7 +8087,7 @@
      * 调用生成缩略图的函数。
      * @param {Object} 相应的参数
      * @param {Object} Backbone-style options 对象。 options.success, 如果设置了，将会处理云端代码调用成功的情况。 options.error 如果设置了，将会处理云端代码调用失败的情况。 两个函数都是可选的。两个函数都只有一个参数。
-     * @return {Bmob.Promise} A promise 将会处理云端代码调用的情况。
+     * @return {Bmob.Promise} 
      */
     thumbnail: function(data, options) {
       var request = Bmob._request("images/thumbnail", null, null, 'POST',
@@ -8060,7 +8103,7 @@
      * 调用生成水印的函数。
      * @param {Object} 相应的参数
      * @param {Object} Backbone-style options 对象。 options.success, 如果设置了，将会处理云端代码调用成功的情况。 options.error 如果设置了，将会处理云端代码调用失败的情况。 两个函数都是可选的。两个函数都只有一个参数。
-     * @return {Bmob.Promise} A promise 将会处理云端代码调用的情况。
+     * @return {Bmob.Promise} 
      */
     watermark: function(data, options) {
       var request = Bmob._request("images/watermark", null, null, 'POST',
@@ -8077,6 +8120,133 @@
 
 }(this));
 
+(function(root) {
+  root.Bmob = root.Bmob || {};
+  var Bmob = root.Bmob;
+  var _ = Bmob._;
+
+  /**
+   * @namespace 处理短信的函数
+   */
+  Bmob.Sms = Bmob.Sms || {};
+
+  _.extend(Bmob.Sms, /** @lends Bmob.Sms */  {
+
+    /**
+     * 请求发送短信内容
+     * @param {Object} 相应的参数
+     * @param {Object} Backbone-style options 对象。 options.success, 如果设置了，将会处理云端代码调用成功的情况。 options.error 如果设置了，将会处理云端代码调用失败的情况。 两个函数都是可选的。两个函数都只有一个参数。
+     * @return {Bmob.Promise} 
+     */
+    requestSms: function(data, options) {
+      var request = Bmob._request("requestSms", null, null, 'POST',
+                                   Bmob._encode(data, null, true));
+      return request.then(function(resp) {
+        return Bmob._decode(null, resp);
+      })._thenRunCallbacks(options);
+
+    },
+
+    /**
+     * 请求短信验证码
+     * @param {Object} 相应的参数
+     * @param {Object} Backbone-style options 对象。 options.success, 如果设置了，将会处理云端代码调用成功的情况。 options.error 如果设置了，将会处理云端代码调用失败的情况。 两个函数都是可选的。两个函数都只有一个参数。
+     * @return {Bmob.Promise}
+     */
+    requestSmsCode: function(data, options) {
+      var request = Bmob._request("requestSmsCode", null, null, 'POST',
+                                   Bmob._encode(data, null, true));
+      return request.then(function(resp) {
+        return Bmob._decode(null, resp);
+      })._thenRunCallbacks(options);
+
+    },
+
+    /**
+     * 验证短信验证码
+     * @param {Object} 相应的参数
+     * @param {Object} Backbone-style options 对象。 options.success, 如果设置了，将会处理云端代码调用成功的情况。 options.error 如果设置了，将会处理云端代码调用失败的情况。 两个函数都是可选的。两个函数都只有一个参数。
+     * @return {Bmob.Promise}
+     */
+    verifySmsCode: function(mob, verifyCode, options) {
+      data = {"mobilePhoneNumber": mob };
+      var request = Bmob._request("verifySmsCode/"+verifyCode, null, null, 'POST',
+                                   Bmob._encode(data, null, true));
+      return request.then(function(resp) {
+        return Bmob._decode(null, resp);
+      })._thenRunCallbacks(options);
+    },
+
+    /**
+     * 查询短信状态
+     * @param {Object} 相应的参数
+     * @param {Object} Backbone-style options 对象。 options.success, 如果设置了，将会处理云端代码调用成功的情况。 options.error 如果设置了，将会处理云端代码调用失败的情况。 两个函数都是可选的。两个函数都只有一个参数。
+     * @return {Bmob.Promise}
+     */
+    querySms: function(smsId, options) {
+      var request = Bmob._request("querySms/"+smsId, null, null, 'GET',
+                                   null);
+      return request.then(function(resp) {
+        return Bmob._decode(null, resp);
+      })._thenRunCallbacks(options);
+    }
+
+  });
+
+
+
+}(this));
+
+(function(root) {
+  root.Bmob = root.Bmob || {};
+  var Bmob = root.Bmob;
+  var _ = Bmob._;
+
+  /**
+   * @namespace 支付功能
+   * <a href="http://docs.bmob.cn/restful/developdoc/index.html?menukey=develop_doc&key=develop_restful#index_支付服务">cloud functions</a>.
+   */
+  Bmob.Pay = Bmob.Pay || {};
+
+  _.extend(Bmob.Pay, /** @lends Bmob.Cloud */ {
+
+    /**
+     * 网页端调起支付宝支付接口
+     * @param {float} 价格
+     * @param {String} 商品名称    
+     * @param {String} 描述        
+     * @param {Object} options  Backbone-style options 对象。
+     * options.success, 如果设置了，将会处理云端代码调用成功的情况。  options.error 如果设置了，将会处理云端代码调用失败的情况。  两个函数都是可选的。两个函数都只有一个参数。
+     * @return {Bmob.Promise} A promise 将会处理云端代码调用的情况。
+     */
+    webPay: function(price, product_name, body, options) {
+      var data={"order_price": price, "product_name": product_name, "body": body}
+      var request = Bmob._request("webpay", null, null, 'POST',
+                                   Bmob._encode(data, null, true));
+
+      return request.then(function(resp) {
+        return Bmob._decode(null, resp);
+      })._thenRunCallbacks(options);
+    },
+
+    /**
+     * 查询订单
+     * @param {String} 订单id        
+     * @param {Object} options  Backbone-style options 对象。
+     * options.success, 如果设置了，将会处理云端代码调用成功的情况。  options.error 如果设置了，将会处理云端代码调用失败的情况。  两个函数都是可选的。两个函数都只有一个参数。
+     * @return {Bmob.Promise} A promise 将会处理云端代码调用的情况。
+     */
+    queryOrder: function(orderId, options) {
+      
+      var request = Bmob._request("pay/"+orderId, null, null, 'GET',
+                                   null);
+      return request.then(function(resp) {
+        return Bmob._decode(null, resp);
+      })._thenRunCallbacks(options);
+    }
+
+  });
+}(this));
 
 
 (function(root) {
@@ -8150,3 +8320,4 @@
     return request._thenRunCallbacks(options);
   };
 }(this));
+

@@ -17,11 +17,11 @@
 			<div class="weui-cell">
 				<div class="weui-cell__hd"><label class="weui-label">密码</label></div>
 				<div class="weui-cell__bd">
-					<input class="weui-input" type="number" pattern="[0-9]*" placeholder="请输入密码" v-model='password'>
+					<input class="weui-input" type="number" pattern="[0-9]*" v-model='password' placeholder="请输入密码">
 				</div>
 			</div>
 			<div class="weui-cell">
-				<div class="weui-btn">登录</div>
+				<button class="weui-btn weui-btn_primary" @click="register">注册</button>
 			</div>
 		</div>
 	</form>
@@ -35,15 +35,24 @@
 
 		},
 		methods:{
-			login ()
+			register ()
 			{
-				Bmob.User.logIn(this.phone, this.password, {
+				var user = new Bmob.User();
+				user.set("username", this.phone);
+				user.set("password", this.password);
+				// user.set("email", "email@example.com");
+
+// other fields can be set just like with Bmob.Object
+				user.set("phone", this.phone);
+
+				user.signUp(null, {
 					success: function(user) {
-// Do stuff after successful login.
-						console.log('登录成功');
+						console.dir(user);
+    					// Hooray! Let them use the app now.
 					},
 					error: function(user, error) {
-					// The login failed. Check error to see why.
+    // Show the error message somewhere and let the user try again.
+    					alert("Error: " + error.code + " " + error.message);
 					}
 				});
 			}
