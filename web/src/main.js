@@ -14,9 +14,15 @@ Bmob.initialize("d906953dd3d938e25d240485f44c57bd", "e9c5aaa92fd184361486049d4fe
 
 // import '../node_modules/weui/dist/style/weui.css';
 /* eslint-disable no-new */
+
 new Vue({
   el: '#app',
   router,
-  template: '<App/>',
-  components: { App }
+  render: h => h(App)
 })
+// new Vue({
+//   el: '#app',
+//   router,
+//   template: '<App/>',
+//   components: { App }
+// })

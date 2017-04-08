@@ -1,12 +1,14 @@
 <template>
 	<div>
 		<div class="weui-navbar">
-			<div class="weui-navbar__item weui_bar__item_on">
+			<div class="weui-navbar__item">
 				信息发布
 			</div>
 		</div>
+		<div class="weui-tab__panel">
+
+        </div>
 		<div class="weui-cells weui-cells_form">
-			<div class="weui-cells__title">模式选择</div>
 			<div class="weui-cells weui-cells_radio">
 				<label class="weui-cell weui-check__label" for="x11">
 					<div class="weui-cell__bd">
@@ -31,12 +33,13 @@
 			</div>
 
 			<div class="weui-cells__title">选择出发地和目的地</div>
-			<div class="weui-cell weui-cell_select weui-cell_select-after">
+			<div class="weui-cells">
+				<div class="weui-cell weui-cell_select weui-cell_select-after">
 				<div class="weui-cell__hd">
 					<label for="" class="weui-label">出发地</label>
 				</div>
 				<div class="weui-cell__bd">
-					<select class="weui-select" name="select2" v-mode="from">
+					<select class="weui-select" name="select2" v-model="from">
 						<option value="141124">临县</option>
 						<option value="140100">太原</option>
 						<option value="141102">离石</option>
@@ -58,6 +61,8 @@
 				</div>
 			</div>
 
+			</div>
+			
 			
 			
 			<div class="weui-cells__title">选择出发日期和出发时间</div>
@@ -98,20 +103,34 @@
 				</div>
 			</div>
 
-			<div class="weui-cell">
-				<div class="weui-cell__hd"><label class="weui-label">人数</label></div>
+			<div class="weui-cell weui-cell_select weui-cell_select-after">
+				<div class="weui-cell__hd">
+					<label for="" class="weui-label">人数</label>
+				</div>
 				<div class="weui-cell__bd">
-					<input class="weui-input" type="number" pattern="[1-3]" v-model="peoplenum"
-					value="1" max="3" min="1">
+					<select class="weui-select" name="select6" v-model="peoplenum">
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+					</select>
 				</div>
 			</div>
-			<div class="weui-cell">
-				<div class="weui-cell__hd"><label class="weui-label">价格(1人)</label></div>
+			<div class="weui-cell weui-cell_select weui-cell_select-after">
+				<div class="weui-cell__hd">
+					<label for="" class="weui-label">价格(每人)</label>
+				</div>
 				<div class="weui-cell__bd">
-					<input class="weui-input" type="number" pattern="[30-100]" v-model="unitprice"
-					value="1" max="3" min="1">
+					<select class="weui-select" name="select7" v-model="unitprice">
+						<option value="0">电话沟通</option>
+						<option value="30">30</option>
+						<option value="40">40</option>
+						<option value="50">50</option>
+						<option value="60">60</option>
+						<option value="70">70</option>
+					</select>
 				</div>
 			</div>
+			
 			<button class="weui-btn weui-btn_primary" @click='publish'>确认发布</button>
 		</div>
 	</div>  
@@ -127,10 +146,9 @@
 				from:141124,
 				to:140100,
 				peoplenum:1,
-				unitprice:30,
+				unitprice:0,
 				startdate:1,
 				starttime:12,
-
 			}
 
 		},
@@ -138,7 +156,6 @@
 			publish ()
 			{
 				var currentUser = Bmob.User.current();
-
 				var CarPeople = Bmob.Object.extend("icp");
     			var cp = new CarPeople();
     			cp.set("cptype",Number(this.cptype));
@@ -146,11 +163,11 @@
     			cp.set('to',Number(this.to));
     			cp.set('startdate',new Date());
     			cp.set('starttime',Number(this.starttime));
-    			cp.set('peoplenum',this.peoplenum);
+    			cp.set('peoplenum',Number(this.peoplenum));
     			cp.set('unitprice',Number(this.unitprice));
-    			console.log(currentUser);
     			if(currentUser){
     				cp.set('parent',currentUser);
+    				cp.set('phone',Number(currentUser.get('mobilePhoneNumber')));
     			}
     			cp.save().then(()=>{
     				console.log('添加成功');
@@ -161,3 +178,8 @@
 		}
 	}
 </script>
+<style scoped>
+	.weui-cells{
+		margin-top: 0px;
+	}
+</style>

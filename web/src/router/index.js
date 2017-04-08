@@ -6,10 +6,12 @@ import PeopleCar from '@/components/PeopleCar.vue'
 
 import Login from '@/components/Login.vue'
 import Register from '@/components/Register.vue'
+import My from '@/components/My.vue'
 
 Vue.use(Router)
 
-export default new Router({
+let routemap={
+  'linkActiveClass':'weui-bar__item_on',
   routes: [
     {
       path: '/',
@@ -39,7 +41,26 @@ export default new Router({
      {
       path: '/my',
       name: 'my',
-      component: Register
+      component: My
     }
   ]
+};
+let router=new Router(routemap);
+router.beforeEach(function (to,from,next) {
+   if(to.path=='/login')
+   {
+      next();
+      return;
+   }
+
+   if (!Bmob.User.current()&&to.path=='/publish') {
+      next({
+        path: '/login'
+      })
+    } else {
+      next()
+    }   
 })
+
+
+export default router;

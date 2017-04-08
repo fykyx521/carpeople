@@ -1,5 +1,13 @@
 <template>
 	<form>
+		<div class="weui-navbar" style="position:fixed;">
+			<div class="weui-navbar__item weui_bar__item_on">
+				登录
+			</div>
+		</div>
+		<div class="weui-tab__panel">
+
+        </div>
 		<div class="weui-cells weui-cells_form">
 
 			<div class="weui-cell weui-cell_vcode">
@@ -20,9 +28,7 @@
 					<input class="weui-input" type="number" pattern="[0-9]*" placeholder="请输入密码" v-model='password'>
 				</div>
 			</div>
-			<div class="weui-cell">
-				<div class="weui-btn weui-btn_primary" @click="login">登录</div>
-			</div>
+			<div class="weui-btn weui-btn_primary" @click="login">登录</div>
 		</div>
 	</form>
 </template>
@@ -30,6 +36,10 @@
 	
 	export default {
 		name:'login',
+		data ()
+		{
+			return {phone:'',password:''}
+		},
 		created()
 		{
 
@@ -37,10 +47,12 @@
 		methods:{
 			login ()
 			{
+				let current=this;
 				Bmob.User.logIn(this.phone, this.password, {
 					success: function(user) {
 // Do stuff after successful login.
 						console.log('登录成功');
+						current.$router.push({name:'carpeople'});
 					},
 					error: function(user, error) {
 					// The login failed. Check error to see why.
