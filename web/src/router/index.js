@@ -6,7 +6,8 @@ import PeopleCar from '@/components/PeopleCar.vue'
 
 import Login from '@/components/Login.vue'
 import Register from '@/components/Register.vue'
-import My from '@/components/My.vue'
+import My from '@/components/My.vue'  
+import Hello from '@/components/Hello.vue'
 
 Vue.use(Router)
 
@@ -14,7 +15,12 @@ let routemap={
   'linkActiveClass':'weui-bar__item_on',
   routes: [
     {
-      path: '/',
+       path:'/',
+       name:'hello',
+       component:Hello
+    },
+    {
+      path: '/publish',
       name: 'publish',
       component: Publish
     },

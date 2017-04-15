@@ -5,6 +5,7 @@ import App from './App'
 import router from './router'
 import mixin from './mixin'
 import infiniteScroll from 'vue-infinite-scroll'
+import 'flex.css'
 Vue.use(infiniteScroll)
 Vue.mixin(mixin);
 

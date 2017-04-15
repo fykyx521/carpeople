@@ -1,10 +1,6 @@
 <template>
 	<div>
-		<div class="weui-navbar" style="position:fixed;">
-			<div class="weui-navbar__item weui_bar__item_on">
-				人找车
-			</div>
-		</div>
+		<top></top>
 		<div class="weui-tab__panel">
 
         </div>
@@ -13,10 +9,12 @@
 	</div>
 </template>
 <script>
+
+	 import top from './Top.vue';
 	import cplist from './item/Cplist';
 	export default {
 		name:'carpeople',
-		components:{cplist},
+		components:{cplist,top},
 		data ()
 		{
 			return {list:[],cptype:0}

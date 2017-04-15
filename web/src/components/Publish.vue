@@ -9,12 +9,14 @@
 
         </div>
 		<div class="weui-cells weui-cells_form">
-			<div class="weui-cells weui-cells_radio">
-				<label class="weui-cell weui-check__label" for="x11">
-					<div class="weui-cell__bd">
-						<p>车找人</p>
+			<div class="weui-cells__title">出行模式</div>
+			
+			<div class="weui-cells weui-cells_radio"> 
+				<label class="weui-cell weui-check__label" for="x11"> 
+					<div class="weui-cell__bd"> 
+						<p>车找人</p> 
 					</div>
-					<div class="weui-cell__ft">
+					<div class="weui-cell__ft"> 
 						<input type="radio" class="weui-check" name="radio1" id="x11" value="1" v-model="cptype">
 						<span class="weui-icon-checked"></span>
 					</div>
@@ -170,6 +172,7 @@
     				cp.set('phone',Number(currentUser.get('mobilePhoneNumber')));
     			}
     			cp.save().then(()=>{
+    				this.$router.push({name:'peoplecar'})
     				console.log('添加成功');
     			},error=>{
     				console.log(error);
@@ -183,3 +186,6 @@
 		margin-top: 0px;
 	}
 </style>
+
+
+

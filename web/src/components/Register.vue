@@ -1,5 +1,15 @@
 <template>
+
 	<form>
+	<div class="weui-navbar" style="position:fixed;">
+			<div class="weui-navbar__item weui_bar__item_on">
+				注册
+			</div>
+		</div>
+		<div class="weui-tab__panel">
+
+        </div>
+
 		<div class="weui-cells weui-cells_form">
 
 			<div class="weui-cell weui-cell_vcode">
