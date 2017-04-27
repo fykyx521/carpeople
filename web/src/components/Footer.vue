@@ -4,7 +4,7 @@
 
 	 <div class="weui-tabbar" style="position:fixed;">
    
-    <router-link :to="{name:'carpeople'}" class="weui-tabbar__item weui-bar__item--on">
+    <router-link :to="{name:'carpeople'}" class="weui-tabbar__item">
       <span class="weui-badge" style="position: absolute;top: -.4em;right: 1em;">8</span>
       <div class="weui-tabbar__icon">
         <img src="../assets/tab/car.png" alt="" width="32" height="32">

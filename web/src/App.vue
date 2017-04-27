@@ -3,7 +3,7 @@
    <transition name="fade" mode="out-in">
     <router-view></router-view>
    </transition>
-    <appfooter></appfooter>
+    <!-- <appfooter></appfooter> -->
   </div>
 </template>
 

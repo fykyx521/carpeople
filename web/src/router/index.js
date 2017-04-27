@@ -4,6 +4,9 @@ import Publish from '@/components/Publish.vue'
 import CarPeople from '@/components/CarPeople.vue'
 import PeopleCar from '@/components/PeopleCar.vue'
 
+import Search from '@/components/Search.vue'
+import SearchView from '@/components/SearchView.vue'
+
 import Login from '@/components/Login.vue'
 import Register from '@/components/Register.vue'
 import My from '@/components/My.vue'  
@@ -16,8 +19,13 @@ let routemap={
   routes: [
     {
        path:'/',
-       name:'hello',
-       component:Hello
+       name:'search',
+       component:Search
+    },
+    {
+      path:'/searchview',
+      name:'searchview',
+      component:SearchView
     },
     {
       path: '/publish',
