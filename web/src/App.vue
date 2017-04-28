@@ -8,10 +8,10 @@
 </template>
 
 <script>
-import appfooter from '@/components/Footer.vue'
+// import appfooter from '@/components/Footer.vue'
 export default {
-  name: 'app',
-  components:{appfooter}
+  name: 'app'
+  // components:{appfooter}
 }
 </script>
 

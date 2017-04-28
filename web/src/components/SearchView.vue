@@ -44,9 +44,9 @@
 									<div class="weui-flex__item" style="text-align:center;">人数:{{item.get('peoplenum')}}</div>
 									<div class="weui-flex__item" style="text-align:right;"><a :href="telhref(item)"><img src="../assets/phone.png" style="width:32px;height:32px;" /></a></div>
 								</div>
-								<p class="weui-media-box__desc">{{item.get('qqtext')}}</p>
+								<p class="weui-media-box__desc">{{pubtext(item)}}</p>
 								<ul class="weui-media-box__info">
-									<li class="weui-media-box__info__meta">来源:QQ群</li>
+									<li class="weui-media-box__info__meta">来源:{{datafrom(item)}}</li>
 									<li class="weui-media-box__info__meta">发布时间:{{pubtime(item)}}</li>
 									<li class="weui-media-box__info__meta weui-media-box__info__meta_extra">人数:{{item.get('peoplenum')}}</li>
 								</ul>
@@ -62,7 +62,14 @@
             <span class="weui-loadmore__tips">{{nodatatxt}}</span>
         </div>
 
+        <div class="weui-tab">
+            <div class="weui-tab__panel">
 
+            </div>
+             <a href="javascript:;" class="weui-btn weui-btn_primary" @click='publish'>
+                    发布拼车信息
+               </a>
+        </div>
 
 	</div>	
 	
@@ -91,8 +98,8 @@
 		},
 		created()
 		{
-			let fromp=this.$route.params.from;
-			let to=this.$route.params.to;
+			let fromp=this.$route.query.from;
+			let to=this.$route.query.to;
 			if(fromp)
 			{
 				this.from=Number(fromp);
@@ -114,6 +121,7 @@
 			{
 				return "暂无更多"+mapdata[this.from]+'到'+mapdata[this.to]+'的记录,过一会再来查';
 			}
+
 		},
 		watch:{
 			cptype:'load'
@@ -121,19 +129,40 @@
 		methods:{
 			publish()
 			{
-				this.$router.push({name:'publish',params:{from:this.from,to:this.to}});
+				this.$router.push({name:'publish',query:{from:this.from,to:this.to}});
 			},
 			start(item)
 			{
 				var startdate=new Date();
 				let date=item.get('startdate');
-				console.log(date.toString());
+				// console.log(date.toString());
 				return moment(date).calendar();
 			},
 			pubtime(item)
 			{
-				let date=item.get('createdAt');
-				return moment(date).startOf('hour').fromNow();
+				let date=item.updatedAt;
+				// console.dir(date);
+				// let date2=Date.parse(date);
+				// console.log(date);
+				// alert(date);
+				// return this.diff(date2.getTime());
+				return moment(date).fromNow();
+			},
+			pubtext(item)
+			{
+				let txt=this.cptype?'[车找人]':'[人找车]';
+				txt+=mapdata[this.from]+'到'+mapdata[this.to];
+
+				return item.get('datafrom')==1?item.get('qqtext'):txt;
+
+			},
+			datafrom(item)
+			{
+				if(item.get('datafrom')==1)
+				{
+					return 'QQ群';
+				}
+				return '公众号ii0358';
 			},
 			telhref(item)
 			{

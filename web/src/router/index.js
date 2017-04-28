@@ -1,16 +1,16 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Publish from '@/components/Publish.vue'
-import CarPeople from '@/components/CarPeople.vue'
-import PeopleCar from '@/components/PeopleCar.vue'
+// import CarPeople from '@/components/CarPeople.vue'
+// import PeopleCar from '@/components/PeopleCar.vue'
 
 import Search from '@/components/Search.vue'
 import SearchView from '@/components/SearchView.vue'
 
-import Login from '@/components/Login.vue'
-import Register from '@/components/Register.vue'
-import My from '@/components/My.vue'  
-import Hello from '@/components/Hello.vue'
+// import Login from '@/components/Login.vue'
+// import Register from '@/components/Register.vue'
+// import My from '@/components/My.vue'  
+// import Hello from '@/components/Hello.vue'
 
 Vue.use(Router)
 
@@ -31,32 +31,32 @@ let routemap={
       path: '/publish',
       name: 'publish',
       component: Publish
-    },
-    {
-      path: '/login',
-      name: 'login',
-      component: Login
-    },
-    {
-      path: '/carpeople',
-      name: 'carpeople',
-      component: CarPeople
-    },
-     {
-      path: '/peoplecar',
-      name: 'peoplecar',
-      component: PeopleCar
-    },
-     {
-      path: '/register',
-      name: 'register',
-      component: Register
-    },
-     {
-      path: '/my',
-      name: 'my',
-      component: My
     }
+    // {
+    //   path: '/login',
+    //   name: 'login',
+    //   component: Login
+    // },
+    // {
+    //   path: '/carpeople',
+    //   name: 'carpeople',
+    //   component: CarPeople
+    // },
+    //  {
+    //   path: '/peoplecar',
+    //   name: 'peoplecar',
+    //   component: PeopleCar
+    // },
+    //  {
+    //   path: '/register',
+    //   name: 'register',
+    //   component: Register
+    // },
+    //  {
+    //   path: '/my',
+    //   name: 'my',
+    //   component: My
+    // }
   ]
 };
 let router=new Router(routemap);

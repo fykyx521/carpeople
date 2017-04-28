@@ -1,7 +1,8 @@
 <template>
 <div>
 	<h1 class="demos-title">拼车搜索</h1>
-	<div class="weui-cells__title">选择出发地和目的地</div>
+	<div class="weui-cells__title"><a @click='changefromto' class="weui-btn weui-btn_mini weui-btn_primary">切换</a>
+	</div>
 	<div class="weui-cells weui-cells_form" >
 		
 				<div class="weui-cell weui-cell_select weui-cell_select-after">
@@ -46,6 +47,13 @@
 			return {from:141124,to:140100}
 		},
 		methods:{
+			changefromto ()
+			{
+				let oldfrom=this.from;
+				let oldto=this.to;
+				this.from=oldto;
+				this.to=oldfrom;
+			},
 			search()
 			{
 				if(this.from==this.to)
@@ -53,7 +61,7 @@
 					alert("出发地和目的地不能一样");
 					return;
 				}
-				this.$router.push({name:'searchview',params:{from:this.from,to:this.to}});
+				this.$router.push({name:'searchview',query:{from:this.from,to:this.to}});
 			}
 		}
 	}

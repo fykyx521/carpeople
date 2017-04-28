@@ -1,16 +1,25 @@
 <template>
 	<div>
 		<div class="weui-navbar">
-			<div class="weui-navbar__item">
-				信息发布
+			
+			<div class="weui-navbar__item weui-flex">
+				<div class="weui-flex__item" @click='back'>< 返回</div>
+				<div class="weui-flex__item">拼车信息发布</div>
+				<div class="weui-flex__item"></div>
 			</div>
+			
 		</div>
 		<div class="weui-tab__panel">
 
         </div>
 		<div class="weui-cells weui-cells_form">
 			<div class="weui-cells__title">出行模式</div>
-			
+			<div class="weui-cell weui-cell_warn">
+                <div class="weui-cell__hd"><label class="weui-label">手机号</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="number" pattern="[0-9]*" v-model='tel' placeholder="请输入手机号">
+                </div>
+            </div>
 			<div class="weui-cells weui-cells_radio"> 
 				<label class="weui-cell weui-check__label" for="x11"> 
 					<div class="weui-cell__bd"> 
@@ -36,12 +45,7 @@
 
 			<div class="weui-cells__title">选择出发地和目的地</div>
 			<div class="weui-cells">
-			<div class="weui-cell">
-                <div class="weui-cell__hd"><label class="weui-label">手机号</label></div>
-                <div class="weui-cell__bd">
-                    <input class="weui-input" type="number" pattern="[0-9]*" v-model='tel' placeholder="请输入手机号">
-                </div>
-            </div>
+			
 				<div class="weui-cell weui-cell_select weui-cell_select-after">
 				<div class="weui-cell__hd">
 					<label for="" class="weui-label">出发地</label>
@@ -180,6 +184,10 @@
 			 }
 		},
 		methods:{
+			back()
+			{
+				this.$router.push({name:'searchview'});
+			},
 			valid ()
 			{
 				if(this.tel=='')
