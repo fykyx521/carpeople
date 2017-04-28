@@ -60,21 +60,21 @@ let routemap={
   ]
 };
 let router=new Router(routemap);
-router.beforeEach(function (to,from,next) {
-   if(to.path=='/login')
-   {
-      next();
-      return;
-   }
+// router.beforeEach(function (to,from,next) {
+//    if(to.path=='/login')
+//    {
+//       next();
+//       return;
+//    }
 
-   if (!Bmob.User.current()&&to.path=='/publish') {
-      next({
-        path: '/login'
-      })
-    } else {
-      next()
-    }   
-})
+//    if (!Bmob.User.current()&&to.path=='/publish') {
+//       next({
+//         path: '/login'
+//       })
+//     } else {
+//       next()
+//     }   
+// })
 
 
 export default router;

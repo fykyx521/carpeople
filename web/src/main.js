@@ -5,11 +5,17 @@ import App from './App'
 import router from './router'
 import mixin from './mixin'
 import infiniteScroll from 'vue-infinite-scroll'
-import 'flex.css'
+// import 'flex.css'
 Vue.use(infiniteScroll)
 Vue.mixin(mixin);
 
 Vue.config.productionTip = false;
+
+// import VueMaterial from 'vue-material'
+// import 'vue-material/dist/vue-material.css'
+
+// Vue.use(VueMaterial)
+
 
 Bmob.initialize("d906953dd3d938e25d240485f44c57bd", "e9c5aaa92fd184361486049d4fef2a8c");
 

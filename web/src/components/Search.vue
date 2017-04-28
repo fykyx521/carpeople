@@ -32,7 +32,8 @@
 			</div>
 		
 		<div class="weui-cells">
-			<router-link type="button" name="" class="weui-btn weui-btn_primary" :to="{name:'searchview',params:{from:from,to:to}}">搜索</router-link>
+			<input type="button" name="" class="weui-btn weui-btn_primary" @click="search()" value="搜索拼车信息">
+			<!-- <router-link type="button" name=""  :to="{name:'searchview',params:{from:from,to:to}}">搜索</router-link> -->
 		</div>
 	</div>	
 </div>	
@@ -43,6 +44,17 @@
 		data ()
 		{
 			return {from:141124,to:140100}
+		},
+		methods:{
+			search()
+			{
+				if(this.from==this.to)
+				{
+					alert("出发地和目的地不能一样");
+					return;
+				}
+				this.$router.push({name:'searchview',params:{from:this.from,to:this.to}});
+			}
 		}
 	}
 </script>
