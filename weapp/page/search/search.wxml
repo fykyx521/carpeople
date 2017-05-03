@@ -1,0 +1,31 @@
+<view>
+  <view class="demos-title">拼车搜索</view>
+  <view class="weui-cells__title">
+  <button type="primary" class="weui-btn mini-btn" bindtap="changefromto" size="mini">切换</button>
+  </view>
+  <view class="weui-cells weui-cells_form">
+   
+    <view class="weui-cell weui-cell_select">
+      <view class="weui-cell__hd weui-cell__hd_in-select-after">
+        <view class="weui-label">出发地:</view>
+      </view>
+      <view class="weui-cell__bd">
+        <picker bindchange="bindfromchange" value="{{fromindex}}" range="{{fromcounty}}">
+          <view class="weui-select weui-select_in-select-after">{{fromcounty[fromindex]}}</view>
+        </picker>
+      </view>
+    </view>
+  <view class="weui-cell weui-cell_select">
+      <view class="weui-cell__hd weui-cell__hd_in-select-after">
+        <view class="weui-label">目的地:</view>
+      </view>
+      <view class="weui-cell__bd">
+          <picker bindchange="bindtochange" value="{{toindex}}" range="{{tocounty}}">
+          <view class="weui-select weui-select_in-select-after">{{tocounty[toindex]}}</view>
+        </picker>
+      </view>
+    </view>
+   
+  </view>
+   <button class="weui-btn" type="primary" bindtap="dosearch">搜索拼车信息</button> 
+</view>

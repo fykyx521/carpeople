@@ -3,11 +3,13 @@ var utils = require('./utils')
 var config = require('../config')
 var vueLoaderConfig = require('./vue-loader.conf')
 
+const vuxLoader = require('vux-loader')
+
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
 
-module.exports = {
+let webpackConfig = {
   entry: {
     app: './src/main.js'
   },
@@ -26,6 +28,8 @@ module.exports = {
     alias: {
       'vue$': 'vue/dist/vue.runtime.esm.js',
       '@': resolve('src')
+      // 'moment':'moment/src/moment.js'
+      
     }
   },
   module: {
@@ -68,3 +72,7 @@ module.exports = {
     ]
   }
 }
+
+module.exports = vuxLoader.merge(webpackConfig, {
+  plugins: ['vux-ui', 'progress-bar', 'duplicate-style']
+})
