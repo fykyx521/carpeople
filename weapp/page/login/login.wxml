@@ -1,0 +1,49 @@
+<form bindsubmit="sendSms" bindreset="formReset">
+<view class="weui-cells weui-cells_after-title" >
+      <view class="weui-cell weui-cell_input">
+        <view class="weui-cell__hd">
+          <view class="weui-label">手机号</view>
+        </view>
+        <view class="weui-cell__bd">
+          <input class="weui-input" type="number" placeholder="请输入手机号" />
+        </view>
+       
+      </view>
+      <view class="weui-cell weui-cell_input">
+        <view class="weui-cell__hd">
+          <view class="weui-label">验证码:</view>
+        </view>
+        <view class="weui-cell__bd">
+          <input class="weui-input" type="number" placeholder="请输入验证码" />
+        </view>
+      </view>
+      <button type="primary" formType="submit">立即发送</button> 
+ </view>     
+ </form>
+
+<form bindsubmit="sendSms" bindreset="formReset">
+ <view class="weui-cells weui-cells_after-title" wx:if="showsend">
+      <view class="weui-cell weui-cell_input weui-cell_vcode">
+        <view class="weui-cell__hd">
+          <view class="weui-label">手机号</view>
+        </view>
+        <view class="weui-cell__bd">
+          <input class="weui-input" type="number" readonly placeholder="请输入手机号" />
+        </view>
+        <view class="weui-cell__ft">
+          <view class="weui-vcode-btn">
+              获取验证码
+          </view>
+        </view>
+      </view>
+      <view class="weui-cell weui-cell_input">
+        <view class="weui-cell__hd">
+          <view class="weui-label">验证码:</view>
+        </view>
+        <view class="weui-cell__bd">
+          <input class="weui-input" type="number" placeholder="请输入验证码" />
+        </view>
+      </view>
+      <button type="primary" formType="submit">立即发送</button>
+ </view>     
+ </form>

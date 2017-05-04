@@ -1,6 +1,6 @@
 function indexToAddr(index)
 {
-    result=0;
+    let result=0;
   
     switch(parseInt(index))
     {

@@ -1,76 +1,71 @@
 import Bmob from '../../utils/bmob';
-import { dateDiff,dateAfter,isToday } from '../../utils/cputil';
-var sliderWidth = 96; 
-const mapdata={
-		'141124':'临县',
-		'140100':'太原',
-		'141102':'离石'
-	};
+import { dateDiff, dateAfter, isToday } from '../../utils/cputil';
+var sliderWidth = 96;
+const mapdata = {
+	'141124': '临县',
+	'140100': '太原',
+	'141102': '离石'
+};
 Page({
 	data: {
 		list: [],
 		nodata: false,
-		loading:false,
+		loading: false,
 		fromaddr: 140100,
 		toaddr: 141124,
 		cptype: 1,
 		nodatatxt: "没有更多数据了",
 		tabs: ["车找人", "人找车"],
-        activeIndex: 0,
-        sliderOffset: 0,
-        sliderLeft: 0
+		activeIndex: 0,
+		sliderOffset: 0,
+		sliderLeft: 0
 	},
 	cpfrom(item) {
 		// console.dir(item);
 		return (item.get('datafrom')) == 1 ? 'qq群' : '公众号ii0358';
 	},
-	
+
 	onReady() {
 		console.log('ready go');
 	},
-	phoneclick(e)
-	{
-		let phone=e.currentTarget.dataset.phone;
+	phoneclick(e) {
+		let phone = e.currentTarget.dataset.phone;
 		console.log(phone);
 		wx.makePhoneCall({
-		  phoneNumber: phone+'',
-		  success: function(res) {
-			console.log('success');
-		  }
+			phoneNumber: phone + '',
+			success: function (res) {
+				console.log('success');
+			}
 		})
 	},
-	tabClick (e) {
-        this.setData({
-            sliderOffset: e.currentTarget.offsetLeft,
-            activeIndex: e.currentTarget.id,
-			cptype:e.currentTarget.id==1?0:1
-        });
+	tabClick(e) {
+		this.setData({
+			sliderOffset: e.currentTarget.offsetLeft,
+			activeIndex: e.currentTarget.id,
+			cptype: e.currentTarget.id == 1 ? 0 : 1
+		});
 		this.load();
-    },
-	getTitle()
-	{
-		return mapdata[this.data.fromaddr]+'到'+mapdata[this.data.toaddr];
 	},
-	pubtext(item)
-			{
-				let txt=this.data.cptype?'[车找人]':'[人找车]';
-				txt+=this.getTitle();
-				
-				let qqtext=item.get('qqtext')+"";
-				let startdate=new Date(Date.parse(item.get('startdate').replace(/-/g, "/")));
-				if(isToday(startdate))
-				{
-					qqtext=qqtext.replace('明天','');
-					qqtext=qqtext.replace('明','');
-					
-				}
-				return item.get('datafrom')==1?qqtext:txt;
+	getTitle() {
+		return mapdata[this.data.fromaddr] + '到' + mapdata[this.data.toaddr];
+	},
+	pubtext(item) {
+		let txt = this.data.cptype ? '[车找人]' : '[人找车]';
+		txt += this.getTitle();
 
-			},
+		let qqtext = item.get('qqtext') + "";
+		let startdate = new Date(Date.parse(item.get('startdate').replace(/-/g, "/")));
+		if (isToday(startdate)) {
+			qqtext = qqtext.replace('明天', '');
+			qqtext = qqtext.replace('明', '');
 
-	load()
-	{
-		let that=this;
+		}
+		return item.get('datafrom') == 1 ? qqtext : txt;
+
+	},
+
+	load() {
+		let that = this;
 		var ICP = Bmob.Object.extend("icp");
 		var query = new Bmob.Query(ICP);
 		var startdate = new Date();
@@ -93,12 +88,12 @@ Page({
 			let results2 = [];
 			results.forEach(function (item, index) {
 				let starttime = item.get('starttime');
-				let date=new Date();
+				let date = new Date();
 				date.setTime(starttime);
 				item.set('startdt', dateAfter(date));
-				let pubdate=new Date(Date.parse(item.updatedAt.replace(/-/g, "/")))
+				let pubdate = new Date(Date.parse(item.updatedAt.replace(/-/g, "/")))
 				// console.log('pubdate'+item.updatedAt);
-				item.set('qqtext',that.pubtext(item));
+				item.set('qqtext', that.pubtext(item));
 				item.set('datediff', dateDiff(pubdate.getTime()));
 				return item;
 			});
@@ -106,53 +101,82 @@ Page({
 			this.setData({
 				list: results
 			});
-			if(results.length==0)
-			{
-				this.setData({nodata:true});
+			if (results.length == 0) {
+				this.setData({ nodata: true });
 			}
 
 			this.hideloading();
-			
+
 
 		});
 	},
-	showloading()
-	{
+	showloading() {
 		wx.showNavigationBarLoading();
-		this.setData({loading:true});
+		this.setData({ loading: true });
 	},
-	hideloading()
-	{
+	hideloading() {
 		wx.hideNavigationBarLoading();
-		this.setData({loading:false});
+		this.setData({ loading: false });
 	},
 	onLoad(option) {
-		 var that = this;
-         wx.getSystemInfo({
-            success: function(res) {
-                that.setData({
-                    sliderLeft: (res.windowWidth / that.data.tabs.length - sliderWidth) / 2,
-                    sliderOffset: res.windowWidth / that.data.tabs.length * that.data.activeIndex
-                });
-            }
-        });
+		var that = this;
+		wx.getSystemInfo({
+			success: function (res) {
+				that.setData({
+					sliderLeft: (res.windowWidth / that.data.tabs.length - sliderWidth) / 2,
+					sliderOffset: res.windowWidth / that.data.tabs.length * that.data.activeIndex
+				});
+			}
+		});
 		// console.log(option);
-		let fromaddr=option.fromaddr
-		let toaddr=option.toaddr;
-		let cptype=option.cptype?option.cptype:1;
+		let fromaddr = option.fromaddr
+		let toaddr = option.toaddr;
+		let cptype = option.cptype ? option.cptype : 1;
 		this.setData({
-			fromaddr:fromaddr,
-			toaddr,toaddr
+			fromaddr: fromaddr,
+			toaddr, toaddr
 		});
 		wx.setNavigationBarTitle({
-		  title: this.getTitle(),
-		  success: function(res) {
-			// success
-		  }
+			title: this.getTitle(),
+			success: function (res) {
+				// success
+			}
 		});
 
 		this.load();
-		
+
+	},
+	dopublish(e)
+	{
+		let currentUser = Bmob.User.current();
+		if(currentUser)
+		{
+			let phoneverify=currentUser.get('mobilePhoneNumberverified');
+			if(phoneverify)
+			{
+				this.goNav('/page/publish/publish');
+			}else{
+				this.goNav('/page/login/login');
+			}
+			
+		}
+	},
+	goNav(path)
+	{
+		wx.navigateTo({
+		  url: path,
+		  success: function(res){
+			// success
+			console.log('success');
+		  },
+		  fail: function(res) {
+			// fail
+			console.log(res);
+		  },
+		  complete: function(res) {
+			// complete
+		  }
+		})
 	}
 
 

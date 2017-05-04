@@ -3,3 +3,9 @@
     position: fixed;
     top: 0;
 }
+
+.footerbutton{
+    position: fixed;
+    bottom:0;
+    width: 750rpx;
+}

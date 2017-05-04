@@ -2,7 +2,7 @@
   "pages": [
     "page/search/search",
     "page/publish/publish",
-    
+    "page/login/login",
     "page/searchview/searchview",
     "example/index",
 
@@ -53,6 +53,7 @@
       "selectedIconPath": "images/publishs.png",
       "text": "发布"
     }
+    
     ]
   },
   "window": {
