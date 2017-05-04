@@ -1,6 +1,6 @@
 <view>
   <view class="weui-tab">
-    <view class="weui-navbar">
+    <view class="weui-navbar navbar">
      <block wx:for-items="{{tabs}}" wx:key="{{index}}">
                     <view id="{{index}}" class="weui-navbar__item {{activeIndex == index ? 'weui-bar__item_on' : ''}}" bindtap="tabClick">
                         <view class="weui-navbar__title">{{item}}</view>
@@ -10,13 +10,13 @@
     </view>
     <view class="weui-tab__panel">
       <view class="weui-panel">
-      <block wx:for="{{list}}" wx:key="{{item.cid}}">
+      <block wx:for="{{list}}" wx:key="{{item.cid}}" >
       <view class="weui-panel__bd">
         <view class="weui-media-box weui-media-box_text">
           <view class="weui-media-box__title weui-media-box__title_in-text weui-flex">
             <view class="weui-flex__item">{{item.startdt}}</view>
             <view class="weui-flex__item" style="text-align:center;">人数:{{item.peoplenum}}</view>
-            <view class="weui-flex__item" style="text-align:right;">
+            <view class="weui-flex__item" style="text-align:right;" data-phone="{{item.phone}}"  bindtap="phoneclick">
                 <image src="../../images/phone.png"  style="width:16pt;height:16pt;" />
             </view>
           </view>

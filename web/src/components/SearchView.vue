@@ -75,8 +75,8 @@
 	
 </template>
 <script>
-	import moment from 'moment';
-	moment.locale('zh-cn'); 
+	// import moment from 'moment';
+	// moment.locale('zh-cn'); 
 	const mapdata={
 		'141124':'临县',
 		'140100':'太原',
@@ -100,6 +100,7 @@
 		{
 			let fromp=this.$route.query.from;
 			let to=this.$route.query.to;
+			let  cptype=this.$route.query.cptype;
 			if(fromp)
 			{
 				this.from=Number(fromp);
@@ -108,6 +109,11 @@
 			{
 				this.to=Number(to);
 			}
+			if(cptype)
+			{
+				this.cptype=parseInt(cptype);
+			}
+
 			// console.log(this.from+":"+this.to);
 			this.load();
 		},
@@ -133,10 +139,11 @@
 			},
 			start(item)
 			{
-				var startdate=new Date();
+				
 				let date=item.get('startdate');
+				let startdate=new Date(Date.parse(date.replace(/-/g, "/")));
 				// console.log(date.toString());
-				return moment(date).calendar();
+				return startdate.getHours()+"点走";//moment(date).calendar();
 			},
 			pubtime(item)
 			{
@@ -146,7 +153,9 @@
 				// console.log(date);
 				// alert(date);
 				// return this.diff(date2.getTime());
-				return moment(date).fromNow();
+				let pubdate=new Date(Date.parse(item.updatedAt.replace(/-/g, "/")));
+				return this.dateDiff(pubdate.getTime());
+				// return moment(date).fromNow();
 			},
 			pubtext(item)
 			{
@@ -188,18 +197,18 @@
 				query.ascending("startdate");
 				query.descending("updatedAt");
 				this.list=[];
-				query.find().then(results=>{
+				query.find().then(results2=>{
 
 					this.loading=false;
 					let map={};
-					let results2=[];
-					results.forEach(item=>{
-						let phone=item.get('phone');
-						if(!map.hasOwnProperty(phone+'')){
-							results2.push(item);	
-							map[item.get('phone')+'']=true;
-						}
-					});
+					// let results2=[];
+					// results.forEach(item=>{
+					// 	let phone=item.get('phone');
+					// 	if(!map.hasOwnProperty(phone+'')){
+					// 		results2.push(item);	
+					// 		map[item.get('phone')+'']=true;
+					// 	}
+					// });
 					this.list=results2;
 					if(results2.length==0)
 					{

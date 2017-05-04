@@ -1,1 +1,5 @@
 /* page/searchview/searchview.wxss */
+.navbar{
+    position: fixed;
+    top: 0;
+}

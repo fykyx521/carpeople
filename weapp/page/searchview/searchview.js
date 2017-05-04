@@ -24,11 +24,20 @@ Page({
 		// console.dir(item);
 		return (item.get('datafrom')) == 1 ? 'qq群' : '公众号ii0358';
 	},
-	cdate(item) {
-		return '123';
-	},
+	
 	onReady() {
 		console.log('ready go');
+	},
+	phoneclick(e)
+	{
+		let phone=e.currentTarget.dataset.phone;
+		console.log(phone);
+		wx.makePhoneCall({
+		  phoneNumber: phone+'',
+		  success: function(res) {
+			console.log('success');
+		  }
+		})
 	},
 	tabClick (e) {
         this.setData({
@@ -69,7 +78,9 @@ Page({
 				let date=new Date();
 				date.setTime(starttime);
 				item.set('startdt', date.getHours() + '点走');
-				item.set('datediff', dateDiff(Date.now(), starttime));
+				let pubdate=new Date(Date.parse(item.updatedAt.replace(/-/g, "/")))
+				// console.log('pubdate'+item.updatedAt);
+				item.set('datediff', dateDiff(pubdate.getTime()));
 				return item;
 			});
 

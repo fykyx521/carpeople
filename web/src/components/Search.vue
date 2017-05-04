@@ -44,9 +44,29 @@
 		name:"search",
 		data ()
 		{
-			return {from:141124,to:140100}
+			return {from:141124,to:140100,cptype:1}
+		},
+		created()
+		{
+			let fromp=this.$route.query.from;
+			let to=this.$route.query.to;
+			let  cptype=this.$route.query.cptype;
+			if(fromp)
+			{
+				this.from=Number(fromp);
+			}
+			if(to)
+			{
+				this.to=Number(to);
+			}
+			if(cptype)
+			{
+				this.cptype=cptype;
+			}
+
 		},
 		methods:{
+
 			changefromto ()
 			{
 				let oldfrom=this.from;
@@ -61,7 +81,7 @@
 					alert("出发地和目的地不能一样");
 					return;
 				}
-				this.$router.push({name:'searchview',query:{from:this.from,to:this.to}});
+				this.$router.push({name:'searchview',query:{from:this.from,to:this.to,cptype:this.cptype}});
 			}
 		}
 	}

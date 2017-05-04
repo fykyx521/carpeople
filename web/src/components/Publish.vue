@@ -135,7 +135,7 @@
 </template>
 
 <script>
-	import moment from 'moment';
+	// import moment from 'moment';
 	export default {
 		name:'publish',
 		data ()
@@ -154,7 +154,8 @@
 		computed:{
 			 startdateoption()
 			 {
-			 	  let hour=moment().hour();
+			 	 
+			 	   let hour=new Date().getHours();
 			 	  if(hour>=19)
 			 	  {
 			 	  	  this.startdate=2;
@@ -165,7 +166,7 @@
 			 },
 			 starttimeoption ()
 			 {
-			 	 let hour=moment().hour();
+			 	 let hour=new Date().getHours();
 			 	 
 			 	 let starthour=hour;
 			 	 if(this.startdate>1)
@@ -219,8 +220,12 @@
     			cp.set("cptype",Number(this.cptype));
     			cp.set('from',Number(this.from));
     			cp.set('to',Number(this.to));
-    			let startdate=moment().hour(this.starttime).minute(0).second(0).toDate();
-    			console.log('startdate');
+    			let startdate=new Date();
+    			startdate.setMinutes(0);
+    			startdate.setSeconds(0);
+    			startdate.setHours(this.starttime);
+    			console.log(startdate);
+    			// let startdate=moment().hour(this.starttime).minute(0).second(0).toDate();
     			cp.set('startdate',startdate);
     			cp.set('starttime',startdate.getTime());
     			cp.set('peoplenum',Number(this.peoplenum));
