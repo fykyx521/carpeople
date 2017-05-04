@@ -26,8 +26,32 @@ var dateDiff = function(hisTime,nowTime){
             else result="刚刚";
             return result;
   }
+
+   var dateAfter= function(startDate,nowTime){
+        let now=new Date();
+        let hours=startDate.getHours();
+        // let newdate=new Date();
+        // newdate.setTime(startDate.getTime());
+        let clonedate=new Date();
+        clonedate.setDate(clonedate.getDate()+1);
+        let result="今天";
+        if(clonedate.getMonth()==startDate.getMonth()&&startDate.getDate()==clonedate.getDate())
+        {
+            result="明天";
+        }
+        clonedate.setDate(clonedate.getDate()+1);//已经加了1天 所以再加1天是后台
+        if(clonedate.getMonth()==startDate.getMonth()&&startDate.getDate()==clonedate.getDate())
+        {
+            result="后天";
+        }
+        return result+hours+"点走";
+
+          
+  }
+
   export default {
   	methods:{
-  		dateDiff
+  		dateDiff,
+      dateAfter
   	}
   }

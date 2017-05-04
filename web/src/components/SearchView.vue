@@ -1,8 +1,8 @@
 <template>
-	<div>
+	<div v-infinite-scroll="load" infinite-scroll-disabled="loading" infinite-scroll-distance="10">
 		
 		<div class="weui-tab">
-				<div class="weui-navbar">
+				<div class="weui-navbar" style="position:fixed;top:0;">
 					<div class="weui-navbar__item weui-flex">
 						<div class="weui-flex__item">
 								<router-link  class='weui-btn weui-btn_mini weui-btn_default' :to="{name:'search'}">重新选择</router-link>
@@ -14,7 +14,6 @@
 							<a href="javascript:;" class="weui-btn weui-btn_mini weui-btn_primary" @click='publish'>发布</a>
 						</div>
 
-						
 					</div>
 				</div>
 			<div class="weui-tab__panel">
@@ -22,7 +21,7 @@
 			</div>
 		</div>
 		<div class="weui-tab">
-				<div class="weui-navbar">
+				<div class="weui-navbar" style="position:fixed;top:50px;">
 					<div class="weui-navbar__item" @click="settype(1)" :class="[cptype==1?'weui-bar__item_on':'']">
 						车找人
 					</div>
@@ -31,11 +30,7 @@
 					</div>
 				</div>
 			<div class="weui-tab__panel">
-
-			</div>
-		</div>
-		
-		<template v-for="item in list">
+				<template v-for="item in list" >
 					<div class="weui-panel weui-panel_access">
 						<div class="weui-panel__bd">
 							<div class="weui-media-box weui-media-box_text">
@@ -53,23 +48,24 @@
 							</div>
 						</div>
 					</div>
-		</template>
+				</template>
+			</div>
+		</div>
+		
+		
 		<div class="weui-loadmore" v-show='loading'>
             <i class="weui-loading"></i>
             <span class="weui-loadmore__tips">正在加载</span>
         </div>
-        <div class="weui-loadmore weui-loadmore_line">
+        <div class="weui-loadmore weui-loadmore_line" v-show='nodata'>
             <span class="weui-loadmore__tips">{{nodatatxt}}</span>
         </div>
-
-        <div class="weui-tab">
-            <div class="weui-tab__panel">
-
-            </div>
-             <a href="javascript:;" class="weui-btn weui-btn_primary" @click='publish'>
-                    发布拼车信息
-               </a>
+        <div style="height:80px;">
+        	
         </div>
+        <div  class="weui-btn weui-btn_primary" @click='publish' style="position:fixed;bottom:0px;width:100%;">
+                    发布拼车信息
+         </div>
 
 	</div>	
 	
@@ -93,7 +89,10 @@
 				list:[],
 				loading:true,
 				nodata:false,
-				list1:[]
+				limit:15,
+				skip:0,
+				currentpage:0,
+				hasmore:true,
 			}
 		},
 		created()
@@ -130,7 +129,7 @@
 
 		},
 		watch:{
-			cptype:'load'
+			cptype:'cptypechange'
 		},
 		methods:{
 			publish()
@@ -142,8 +141,9 @@
 				
 				let date=item.get('startdate');
 				let startdate=new Date(Date.parse(date.replace(/-/g, "/")));
+
 				// console.log(date.toString());
-				return startdate.getHours()+"点走";//moment(date).calendar();
+				return this.dateAfter(startdate);//startdate.getHours()+"点走";//moment(date).calendar();
 			},
 			pubtime(item)
 			{
@@ -177,45 +177,56 @@
 			{
 				return "tel:"+item.get('phone');
 			},
-			load()
+			cptypechange()
 			{
-				this.loading=true;
+				this.load(true)
+			},
+			load(clear=false)
+			{
+				if(clear)
+				{
+					this.skip=0;
+					this.list=[];
+					this.hasmore=true;
+				}
+				if(!this.hasmore)
+				{
+					return;
+				}
 
+				this.loading=true;
+				this.nodata=false;
 				var ICP = Bmob.Object.extend("icp");
 				var query = new Bmob.Query(ICP);
 				var startdate=new Date();
 				// var hours=startdate.getHours();
-				// startdate.setHours(0);	
+				startdate.setHours(startdate.getHours()-1);	
 				startdate.setMinutes(0);
 				startdate.setSeconds(0);
 				// query.greaterThanOrEqualTo("startDate",startdate);
 				query.equalTo('from',this.from);
 				query.equalTo('to',this.to);
-				query.limit(100);
+				query.limit(this.limit);
+				query.skip(this.skip);
 				query.equalTo("cptype", this.cptype);
 				query.greaterThanOrEqualTo('startdate',startdate);
 				query.ascending("startdate");
 				query.descending("updatedAt");
-				this.list=[];
 				query.find().then(results2=>{
 
 					this.loading=false;
-					let map={};
-					// let results2=[];
-					// results.forEach(item=>{
-					// 	let phone=item.get('phone');
-					// 	if(!map.hasOwnProperty(phone+'')){
-					// 		results2.push(item);	
-					// 		map[item.get('phone')+'']=true;
-					// 	}
-					// });
-					this.list=results2;
-					if(results2.length==0)
+					if(results2.length>0)
 					{
-						this.nodata=true;
+						results2.forEach(item=>{
+							this.list.push(item);
+						});
+						this.skip=this.list.length;
 					}else{
-						this.nodata=false;
+						this.nodata=true;
+						this.hasmore=false;
 					}
+					
+					
 				});
 				query.cout
 			},
