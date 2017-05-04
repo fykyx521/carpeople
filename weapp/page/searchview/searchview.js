@@ -1,5 +1,5 @@
 import Bmob from '../../utils/bmob';
-import { dateDiff } from '../../utils/cputil';
+import { dateDiff,dateAfter,isToday } from '../../utils/cputil';
 var sliderWidth = 96; 
 const mapdata={
 		'141124':'临县',
@@ -51,8 +51,26 @@ Page({
 	{
 		return mapdata[this.data.fromaddr]+'到'+mapdata[this.data.toaddr];
 	},
+	pubtext(item)
+			{
+				let txt=this.data.cptype?'[车找人]':'[人找车]';
+				txt+=this.getTitle();
+				
+				let qqtext=item.get('qqtext')+"";
+				let startdate=new Date(Date.parse(item.get('startdate').replace(/-/g, "/")));
+				if(isToday(startdate))
+				{
+					qqtext=qqtext.replace('明天','');
+					qqtext=qqtext.replace('明','');
+					
+				}
+				return item.get('datafrom')==1?qqtext:txt;
+
+			},
+
 	load()
 	{
+		let that=this;
 		var ICP = Bmob.Object.extend("icp");
 		var query = new Bmob.Query(ICP);
 		var startdate = new Date();
@@ -77,9 +95,10 @@ Page({
 				let starttime = item.get('starttime');
 				let date=new Date();
 				date.setTime(starttime);
-				item.set('startdt', date.getHours() + '点走');
+				item.set('startdt', dateAfter(date));
 				let pubdate=new Date(Date.parse(item.updatedAt.replace(/-/g, "/")))
 				// console.log('pubdate'+item.updatedAt);
+				item.set('qqtext',that.pubtext(item));
 				item.set('datediff', dateDiff(pubdate.getTime()));
 				return item;
 			});

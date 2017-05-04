@@ -45,13 +45,21 @@ var dateDiff = function(hisTime,nowTime){
             result="后天";
         }
         return result+hours+"点走";
-
-          
+  }
+  var isToday=function(startDate)
+  {
+     let now=new Date();
+     if(now.getDate()==startDate.getDate())
+     {
+        return true;
+     }
+     return false;
   }
 
   export default {
   	methods:{
   		dateDiff,
-      dateAfter
+      dateAfter,
+      isToday
   	}
   }

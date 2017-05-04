@@ -161,8 +161,16 @@
 			{
 				let txt=this.cptype?'[车找人]':'[人找车]';
 				txt+=mapdata[this.from]+'到'+mapdata[this.to];
-
-				return item.get('datafrom')==1?item.get('qqtext'):txt;
+				
+				let qqtext=item.get('qqtext')+"";
+				let startdate=new Date(Date.parse(item.get('startdate').replace(/-/g, "/")));
+				if(this.isToday(startdate))
+				{
+					qqtext=qqtext.replace('明天','');
+					qqtext=qqtext.replace('明','');
+					
+				}
+				return item.get('datafrom')==1?qqtext:txt;
 
 			},
 			datafrom(item)
