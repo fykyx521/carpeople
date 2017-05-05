@@ -68,7 +68,7 @@ Page({
 	},
 	ondown()
 	{
-		console.log('load');
+		
 		this.load();
 
 	},
@@ -84,6 +84,12 @@ Page({
 		{
 			return;
 		}
+		if(this.data.loading)
+		{
+			console.log('loading');
+			return;
+		}
+		this.showloading();
 		let that = this;
 		var ICP = Bmob.Object.extend("icp");
 		var query = new Bmob.Query(ICP);
@@ -104,7 +110,7 @@ Page({
 		query.greaterThanOrEqualTo('startdate', startdate);
 		query.ascending("startdate");
 		query.descending("updatedAt");
-		this.showloading();
+		
 		let nlist=this.data.list;
 		
 		query.find().then(results => {
