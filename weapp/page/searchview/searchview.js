@@ -1,6 +1,8 @@
 import Bmob from '../../utils/bmob';
 import { dateDiff, dateAfter, isToday } from '../../utils/cputil';
 var sliderWidth = 96;
+let skip=0;
+let hasmore=true;
 const mapdata = {
 	'141124': '临县',
 	'140100': '太原',
@@ -18,7 +20,8 @@ Page({
 		tabs: ["车找人", "人找车"],
 		activeIndex: 0,
 		sliderOffset: 0,
-		sliderLeft: 0
+		sliderLeft: 0,
+		scrollHeight:0
 	},
 	cpfrom(item) {
 		// console.dir(item);
@@ -30,7 +33,7 @@ Page({
 	},
 	phoneclick(e) {
 		let phone = e.currentTarget.dataset.phone;
-		console.log(phone);
+		// console.log(phone);
 		wx.makePhoneCall({
 			phoneNumber: phone + '',
 			success: function (res) {
@@ -44,7 +47,7 @@ Page({
 			activeIndex: e.currentTarget.id,
 			cptype: e.currentTarget.id == 1 ? 0 : 1
 		});
-		this.load();
+		this.reload();
 	},
 	getTitle() {
 		return mapdata[this.data.fromaddr] + '到' + mapdata[this.data.toaddr];
@@ -63,29 +66,49 @@ Page({
 		return item.get('datafrom') == 1 ? qqtext : txt;
 
 	},
+	ondown()
+	{
+		console.log('load');
+		this.load();
+
+	},
+	reload(){
+		skip=0;
+		hasmore=true;
+		this.setData({list:[]});
+		this.load();
+	},
 
 	load() {
+		if(!hasmore)
+		{
+			return;
+		}
 		let that = this;
 		var ICP = Bmob.Object.extend("icp");
 		var query = new Bmob.Query(ICP);
 		var startdate = new Date();
 		// var hours=startdate.getHours();
 		// startdate.setHours(0);	
+		// startdate.setHours(-1);
+		console.log(startdate);
+		startdate.setHours(startdate.getHours()-1);
 		startdate.setMinutes(0);
 		startdate.setSeconds(0);
 		// query.greaterThanOrEqualTo("startDate",startdate);
 		query.equalTo('from', Number(this.data.fromaddr));
 		query.equalTo('to', Number(this.data.toaddr));
-		query.limit(100);
+		query.limit(5);
+		query.skip(skip);
 		query.equalTo("cptype", this.data.cptype);
 		query.greaterThanOrEqualTo('startdate', startdate);
 		query.ascending("startdate");
 		query.descending("updatedAt");
 		this.showloading();
+		let nlist=this.data.list;
+		
 		query.find().then(results => {
-			this.loading = false;
-			let map = {};
-			let results2 = [];
+			
 			results.forEach(function (item, index) {
 				let starttime = item.get('starttime');
 				let date = new Date();
@@ -95,13 +118,18 @@ Page({
 				// console.log('pubdate'+item.updatedAt);
 				item.set('qqtext', that.pubtext(item));
 				item.set('datediff', dateDiff(pubdate.getTime()));
+				nlist.push(item);
 				return item;
 			});
-
+			
 			this.setData({
-				list: results
+				loading:false,
+				list: nlist
 			});
+			skip=nlist.length;
+			
 			if (results.length == 0) {
+				hasmore=false;
 				this.setData({ nodata: true });
 			}
 
@@ -124,7 +152,8 @@ Page({
 			success: function (res) {
 				that.setData({
 					sliderLeft: (res.windowWidth / that.data.tabs.length - sliderWidth) / 2,
-					sliderOffset: res.windowWidth / that.data.tabs.length * that.data.activeIndex
+					sliderOffset: res.windowWidth / that.data.tabs.length * that.data.activeIndex,
+					scrollHeight:res.windowHeight-100,
 				});
 			}
 		});
@@ -143,7 +172,7 @@ Page({
 			}
 		});
 
-		this.load();
+		this.reload();
 
 	},
 	dopublish(e)

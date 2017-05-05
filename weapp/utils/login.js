@@ -12,7 +12,6 @@ function login()
 
               // 第二次登录，打印用户之前保存的昵称
               console.log(user.get("nickName"), 'res.get("nickName")');
-
               //更新openid
               wx.setStorageSync('openid', openid)
             } else {//注册成功的情况

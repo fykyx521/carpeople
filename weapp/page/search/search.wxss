@@ -5,3 +5,7 @@
     font-weight: 400;
     margin: 15% 15%;
 }
+
+.no-radius{
+    border-radius:0rpx;
+}

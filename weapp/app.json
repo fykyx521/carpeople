@@ -52,6 +52,12 @@
       "iconPath": "images/publish.png",
       "selectedIconPath": "images/publishs.png",
       "text": "发布"
+    },
+    {
+      "pagePath": "example/index",
+      "iconPath": "images/publish.png",
+      "selectedIconPath": "images/publishs.png",
+      "text": "发布"
     }
     
     ]
