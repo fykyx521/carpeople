@@ -12,6 +12,18 @@ Page({
 
         isAgree: false
     },
+    onLoad(option)
+    {
+        
+        let fromindex = option.fromindex?option.fromindex:0
+		let toindex = !option.toindex?1:option.toindex;
+		let cptype = option.cptype ? option.cptype : 1;
+		this.setData({
+			fromindex: fromindex,
+			toindex, toindex,
+            cptype:cptype
+		});
+    },
     bindfromchange(e){
         this.setData({
             fromindex: e.detail.value
@@ -31,14 +43,17 @@ Page({
             toindex:fromindex
         });
     },
-    
+   
     dosearch(e)
     {
-        
-        console.log('index',this.data.fromindex,this.data.toindex);
+        if(this.data.fromindex==this.data.toindex)
+        {
+            wx.showToast({title:'出发地目的地不能相同'})
+            return;
+        }
         let fromaddr=indexToAddr(this.data.fromindex);
         let toaddr=indexToAddr(this.data.toindex);
-        console.log('asfdf',fromaddr,toaddr);
+        // console.log('asfdf',fromaddr,toaddr);
         // wx.showNavigationBarLoading();
         wx.navigateTo({
           url: '/page/searchview/searchview?fromaddr='+fromaddr+"&toaddr="+toaddr,
@@ -56,6 +71,16 @@ Page({
           }
         });
         
+    },
+    onPullDownRefresh: function(){
+        wx.stopPullDownRefresh();
+    },
+    onShareAppMessage()
+    {
+        return {
+            title: '拼车搜索',
+            path: '/page/user?from='+this.data.fromindex+"&to="+this.data.toindex
+        }
     }
 
     

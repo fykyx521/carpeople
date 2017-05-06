@@ -220,6 +220,7 @@
     			cp.set("cptype",Number(this.cptype));
     			cp.set('from',Number(this.from));
     			cp.set('to',Number(this.to));
+    			cp.set('datafrom',2);
     			let startdate=new Date();
     			startdate.setMinutes(0);
     			startdate.setSeconds(0);

@@ -9,10 +9,9 @@
       <view class="weui-navbar__slider" style="left: {{sliderLeft}}px; transform: translateX({{sliderOffset}}px); -webkit-transform: translateX({{sliderOffset}}px);"></view>
     </view>
     <view class="weui-tab__panel">
-     
         <view class="weui-panel" >
           <view class="weui-panel__bd">
-           <scroll-view scroll-y="true" style="height:{{scrollHeight}}px;" bindscrolltolower="ondown">
+          
             <block wx:for="{{list}}" wx:key="{{item.id}}">
               <view class="weui-media-box weui-media-box_text">
                 <view class="weui-media-box__title weui-media-box__title_in-text weui-flex">
@@ -26,15 +25,26 @@
                 <view class="weui-media-box__info">
                   <view class="weui-media-box__info__meta">发布于:{{item.datediff}}</view>
                   <view class="weui-media-box__info__meta">人数:{{item.peoplenum}}</view>
-                  <view class="weui-media-box__info__meta weui-media-box__info__meta_extra"></view>
+                  <view class="weui-media-box__info__meta weui-media-box__info__meta_extra"
+                   data-datafrom="{{item.datafrom}}" 
+                   data-lat="{{item.lat}}"
+                   data-lon="{{item.lon}}"
+                   bindtap="openlocation">{{item.addr}}</view>
                 </view>
               </view>
             </block>
-            </scroll-view>
           </view>
         </view>
-        
     </view>
+  </view>
+  <view class="weui-loadmore" wx:if="{{loading}}">
+            <view class="weui-loading"></view>
+            <view class="weui-loadmore__tips">正在加载</view>
+  </view>
+  <view class="weui-loadmore weui-loadmore_line" wx:if='{{nodata}}'>
+            <view class="weui-loadmore__tips weui-loadmore__tips_in-line">{{nodatatxt}}</view>
+  </view>
+  <view style="height:50rpx;">
   </view>
   <view class="footerbutton">
     <button class="weui-btn no-radius" type="primary" bindtap="dopublish">发布拼车信息</button>

@@ -37,7 +37,7 @@ Page({
 		wx.makePhoneCall({
 			phoneNumber: phone + '',
 			success: function (res) {
-				console.log('success');
+				
 			}
 		})
 	},
@@ -66,19 +66,26 @@ Page({
 		return item.get('datafrom') == 1 ? qqtext : txt;
 
 	},
-	ondown()
-	{
-		
-		this.load();
-
-	},
+	onReachBottom: function() {
+    	this.load();
+  	},
 	reload(){
 		skip=0;
 		hasmore=true;
 		this.setData({list:[]});
 		this.load();
 	},
-
+	checknodata(results)
+	{
+		if (results.length == 0) {
+				hasmore=false;
+				this.setData({ nodata: true });
+		}
+		let nodatatxt= "暂无更多数据,过一会再来或者点击底部发布一条拼车信息让别人联系你";
+		this.setData({
+			nodatatxt:nodatatxt
+		});
+	},
 	load() {
 		if(!hasmore)
 		{
@@ -101,10 +108,10 @@ Page({
 		startdate.setHours(startdate.getHours()-1);
 		startdate.setMinutes(0);
 		startdate.setSeconds(0);
-		// query.greaterThanOrEqualTo("startDate",startdate);
+		
 		query.equalTo('from', Number(this.data.fromaddr));
 		query.equalTo('to', Number(this.data.toaddr));
-		query.limit(100);
+		query.limit(5);
 		query.skip(skip);
 		query.equalTo("cptype", this.data.cptype);
 		query.greaterThanOrEqualTo('startdate', startdate);
@@ -114,7 +121,6 @@ Page({
 		let nlist=this.data.list;
 		
 		query.find().then(results => {
-			
 			results.forEach(function (item, index) {
 				let starttime = item.get('starttime');
 				let date = new Date();
@@ -124,6 +130,7 @@ Page({
 				// console.log('pubdate'+item.updatedAt);
 				item.set('qqtext', that.pubtext(item));
 				item.set('datediff', dateDiff(pubdate.getTime()));
+				item.set('addr',item.get('datafrom')!=4?'无':'查看位置');
 				nlist.push(item);
 				return item;
 			});
@@ -134,10 +141,8 @@ Page({
 			});
 			skip=nlist.length;
 			
-			if (results.length == 0) {
-				hasmore=false;
-				this.setData({ nodata: true });
-			}
+			this.checknodata(results);
+			
 
 			this.hideloading();
 
@@ -146,7 +151,7 @@ Page({
 	},
 	showloading() {
 		wx.showNavigationBarLoading();
-		this.setData({ loading: true });
+		this.setData({ loading: true,nodata:false });
 	},
 	hideloading() {
 		wx.hideNavigationBarLoading();
@@ -169,7 +174,10 @@ Page({
 		let cptype = option.cptype ? option.cptype : 1;
 		this.setData({
 			fromaddr: fromaddr,
-			toaddr, toaddr
+			toaddr, toaddr,
+			cptype,cptype,
+			activeIndex:cptype?0:1
+			
 		});
 		wx.setNavigationBarTitle({
 			title: this.getTitle(),
@@ -187,12 +195,19 @@ Page({
 		if(currentUser)
 		{
 			let phoneverify=currentUser.get('mobilePhoneNumberverified');
-			if(phoneverify)
-			{
-				this.goNav('/page/publish/publish');
-			}else{
-				this.goNav('/page/login/login');
-			}
+			// this.goNav('/page/publish/publish');
+			wx.switchTab({
+			  url: '/page/publish/publish',
+			  success: function(res){
+				// success
+			  },
+			  fail: function(res) {
+				// fail
+			  },
+			  complete: function(res) {
+				// complete
+			  }
+			})
 			
 		}
 	},
@@ -212,7 +227,41 @@ Page({
 			// complete
 		  }
 		})
-	}
+	},
+	openlocation(e)
+	{
+		let dataset = e.target.dataset;
+		console.dir(dataset.datafrom,dataset.lat,dataset.lon);
+		if(dataset.datafrom==4&&dataset.lat!=0&&dataset.lon!=0)
+		{
+			wx.openLocation({
+			  latitude: dataset.lat, // 纬度，范围为-90~90，负数表示南纬
+			  longitude: dataset.lon, // 经度，范围为-180~180，负数表示西经
+			  scale: 28, // 缩放比例
+			  // name: 'name', // 位置名
+			  // address: 'address', // 地址的详细说明
+			  success: function(res){
+				// success
+			  },
+			  fail: function(res) {
+				// fail
+			  },
+			  complete: function(res) {
+				// complete
+			  }
+			})
+		}
+	},
+	 onShareAppMessage()
+    {
+		let cpstr=this.data.cptype?'车找人':'人找车';
+		cpstr=this.getTitle()+cpstr;
+		let title=cpstr;
+        return {
+            title: cpstr,
+            path: '/page/searchview/searchview?fromaddr='+this.data.fromaddr+"&toaddr="+this.data.toaddr+"&cptype="+this.data.cptype
+        }
+    }
 
 
 });

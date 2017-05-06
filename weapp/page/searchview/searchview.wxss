@@ -7,10 +7,9 @@
 .footerbutton{
     position: fixed;
     bottom:0;
-    height: 50px;
+    height: 50rpx;
     width: 750rpx;
 }
-
 .no-radius{
     border-radius:0rpx;
     position: fixed;

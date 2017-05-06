@@ -4,7 +4,9 @@
     "page/publish/publish",
     "page/login/login",
     "page/searchview/searchview",
+    "page/my/my",
     "example/index",
+
 
     "example/button/button",
     "example/list/list",
@@ -54,6 +56,12 @@
       "text": "发布"
     },
     {
+      "pagePath":  "page/my/my",
+      "iconPath": "images/publish.png",
+      "selectedIconPath": "images/publishs.png",
+      "text": "发布"
+    },
+     {
       "pagePath": "example/index",
       "iconPath": "images/publish.png",
       "selectedIconPath": "images/publishs.png",
@@ -66,7 +74,9 @@
     "navigationBarTextStyle": "black",
     "navigationBarTitleText": "0358", 
     "navigationBarBackgroundColor": "#f8f8f8",
-    "backgroundColor": "#f8f8f8"
+    "backgroundColor": "#f8f8f8",
+    "enablePullDownRefresh":false
+    
   },
   "networkTimeout": {
     "request": 10000,
