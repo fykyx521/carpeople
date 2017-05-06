@@ -157,7 +157,17 @@ Page({
 		wx.hideNavigationBarLoading();
 		this.setData({ loading: false });
 	},
-	onLoad(option) {
+	onReady(option)
+	{
+		console.log('show');
+		console.log(option);
+	},
+	onLoad(option)
+	{
+		this.doOnload(option);
+	},
+	doOnload(option) {
+		console.log(option.query);
 		var that = this;
 		wx.getSystemInfo({
 			success: function (res) {
@@ -177,8 +187,8 @@ Page({
 			toaddr, toaddr,
 			cptype,cptype,
 			activeIndex:cptype?0:1
-			
 		});
+		
 		wx.setNavigationBarTitle({
 			title: this.getTitle(),
 			success: function (res) {
@@ -257,9 +267,11 @@ Page({
 		let cpstr=this.data.cptype?'车找人':'人找车';
 		cpstr=this.getTitle()+cpstr;
 		let title=cpstr;
+		let path='/page/searchview/searchview?fromaddr='+this.data.fromaddr+"&toaddr="+this.data.toaddr+"&cptype="+this.data.cptype;
+		console.log(path);
         return {
             title: cpstr,
-            path: '/page/searchview/searchview?fromaddr='+this.data.fromaddr+"&toaddr="+this.data.toaddr+"&cptype="+this.data.cptype
+            path: path
         }
     }
 

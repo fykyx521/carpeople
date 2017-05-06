@@ -1,4 +1,5 @@
 import Bmob from '../../utils/bmob';
+import common from '../../utils/common.js';
 import { indexToAddr } from '../../utils/cputil';
 Page({
     data: {
@@ -137,6 +138,10 @@ Page({
             wx.showToast({title:'出发地目的地不能相同'});
             return;
         }
+        if(!this.checkphone(phone))
+        {
+            return;
+        }
         
         let findtype = this.ftype ? 1 : 0;
         
@@ -195,6 +200,20 @@ Page({
             console.log(res);
           }
         })
-    }
+    },
+    checkphone(phone) {
+		if (phone == '') {
+			// this.topTips('电话号码不能为空',1500);
+			common.showTip('电话号码不能为空');
+			return false;
+		}
+		let reg = /^1[3|4|5|8|7][0-9]\d{4,8}$/;
+		if (!reg.test(phone.toString())) {
+			// this.topTips('电话号码格式不正确', 1500);
+			common.showTip('电话号码格式不正确');
+			return false;
+		}
+		return true;
+	}
 
 });
