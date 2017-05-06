@@ -9,8 +9,8 @@ Page({
         // ],
 
         radioItems: [
-            {name: '临县到太原', value: '0'},
-            {name: '太原到临县', value: '1', checked: true},
+            {name: '人找车', value: '0'},
+            {name: '车找人', value: '1', checked: true},
             // {name: '太原到临县', value: '2'},
             // {name: '太原到离石', value: '3'},
             // {name: '离石到太原', value: '4'},

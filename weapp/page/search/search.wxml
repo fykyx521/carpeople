@@ -25,7 +25,7 @@
         </picker>
       </view>
     </view>
-   
+    
   </view>
    <button class="weui-btn no-radius" type="primary" bindtap="dosearch">搜索拼车信息</button> 
 </view>

@@ -9,7 +9,6 @@ function login()
             var openid = user.get("authData").weapp.openid;
             console.log(user, 'user', user.id, res);
             if (user.get("nickName")) {
-
               // 第二次登录，打印用户之前保存的昵称
               console.log(user.get("nickName"), 'res.get("nickName")');
               //更新openid

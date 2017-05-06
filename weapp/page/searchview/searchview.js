@@ -104,7 +104,7 @@ Page({
 		// query.greaterThanOrEqualTo("startDate",startdate);
 		query.equalTo('from', Number(this.data.fromaddr));
 		query.equalTo('to', Number(this.data.toaddr));
-		query.limit(5);
+		query.limit(100);
 		query.skip(skip);
 		query.equalTo("cptype", this.data.cptype);
 		query.greaterThanOrEqualTo('startdate', startdate);
