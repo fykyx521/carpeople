@@ -72,9 +72,19 @@ var dateAfter= function(startDate,nowTime){
      return false;
   }
 
+const mapdata = {
+  '141124': '临县',
+  '140100': '太原',
+  '141102': '离石'  
+};
+function fromtostr(fromaddr,toaddr)
+{
+   return mapdata[fromaddr] + '到' + mapdata[toaddr];
+}
 module.exports = {
   indexToAddr: indexToAddr,
   dateDiff:dateDiff,
   dateAfter:dateAfter,
-  isToday:isToday
+  isToday:isToday,
+  fromtostr:fromtostr,
 }

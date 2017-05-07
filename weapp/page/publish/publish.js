@@ -33,12 +33,15 @@ Page({
         //目的地
         tocity: ["临县", "太原", "离石"],
         toindex: 1,
-        ftype: true //默认车找人
+        ftype: true, //默认车找人
+        addressname:'选择详细位置' 
     },
-    onLoad() {
+    onLoad(option) {
+        
         let date = new Date();
         let startdate = date.getFullYear()+'-'+(date.getMonth()+1) + '-' + date.getDate();
-        this.setData({ startdate: startdate });
+        console.log(option.fromindex,)
+        this.setData({ startdate: startdate,fromindex:option.fromindex,toindex:option.toindex });
         
         wx.setNavigationBarTitle({
           title: '发布拼车信息',
@@ -169,7 +172,7 @@ Page({
         // console.log(detail.mobile + ':' + detail.startdate);
         car.save(null, {
             success() {
-                console.log('success');
+               
             }
         })
     },
@@ -188,7 +191,8 @@ Page({
           success: function(res){
             that.setData({
                  lat:res.latitude,  
-                 lon:res.longitude
+                 lon:res.longitude,
+                 addressname:res.name
              });
           },
           fail: function(res) {

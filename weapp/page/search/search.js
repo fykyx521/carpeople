@@ -56,7 +56,7 @@ Page({
         // console.log('asfdf',fromaddr,toaddr);
         // wx.showNavigationBarLoading();
         wx.navigateTo({
-          url: '/page/searchview/searchview?fromaddr='+fromaddr+"&toaddr="+toaddr,
+          url: '/page/searchview/searchview?fromaddr='+fromaddr+"&toaddr="+toaddr+'&fromindex='+this.data.fromindex+'&toindex='+this.data.toindex,
           success: function(res){
             // success
             console.log('success');

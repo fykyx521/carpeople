@@ -15,21 +15,18 @@
             <block wx:for="{{list}}" wx:key="{{item.id}}">
               <view class="weui-media-box weui-media-box_text">
                 <view class="weui-media-box__title weui-media-box__title_in-text weui-flex">
-                  <view class="weui-flex__item">{{item.startdt}}</view>
-                  <view class="weui-flex__item" style="text-align:center;">人数:{{item.peoplenum}}</view>
-                  <view class="weui-flex__item" style="text-align:right;" data-phone="{{item.phone}}" bindtap="phoneclick">
-                    <image src="../../images/phone.png" style="width:16pt;height:16pt;" />
-                  </view>
+                  <view class="weui-flex__item">{{item.fromtostr}}</view>
+                  <view class="weui-flex__item">人数:{{item.peoplenum}}</view>
                 </view>
                 <view class="weui-media-box__desc">{{item.qqtext}}</view>
                 <view class="weui-media-box__info">
-                  <view class="weui-media-box__info__meta">发布于{{item.datediff}}</view>
-                  <view class="weui-media-box__info__meta">来源:{{item.peoplenum}}</view>
+                  <view class="weui-media-box__info__meta">发布于:{{item.createdAt}}</view>
+                  <view class="weui-media-box__info__meta">人数:{{item.peoplenum}}</view>
                   <view class="weui-media-box__info__meta weui-media-box__info__meta_extra"
                    data-datafrom="{{item.datafrom}}" 
                    data-lat="{{item.lat}}"
                    data-lon="{{item.lon}}"
-                   bindtap="openlocation">{{item.km}}{{item.addr}}</view>
+                   >{{item.addr}}</view>
                 </view>
               </view>
             </block>
@@ -43,10 +40,5 @@
   </view>
   <view class="weui-loadmore weui-loadmore_line" wx:if='{{nodata}}'>
             <view class="weui-loadmore__tips weui-loadmore__tips_in-line">{{nodatatxt}}</view>
-  </view>
-  <view style="height:50rpx;">
-  </view>
-  <view class="footerbutton">
-    <button class="weui-btn no-radius" type="primary" bindtap="dopublish">发布拼车信息</button>
   </view>
 </view>

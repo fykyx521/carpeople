@@ -1,7 +1,7 @@
 
 <!--手机start-->
 <form bindsubmit="bindsubmit">
-  <view class="weui-cells__title">请输入手机号</view>
+  
   <view class="weui-cells weui-cells_after-title">
     <view class="weui-cell weui-cell_input">
       <view class="weui-cell__hd">
@@ -18,15 +18,23 @@
   <!--start-->
   <view class="weui-cells__title">出行模式</view>
   <view class="weui-cells weui-cells_after-title">
-    <radio-group bindchange="radioChange">
-      <label class="weui-cell weui-check__label" wx:for="{{radioItems}}" wx:key="{{item.value}}">
-        <radio class="weui-check" value="{{item.value}}" checked="{{item.checked}}" />
-        <view class="weui-cell__bd">{{item.name}}</view>
-        <view class="weui-cell__ft weui-cell__ft_in-radio" wx:if="{{item.checked}}">
-          <icon class="weui-icon-radio" type="success_no_circle" size="16"></icon>
-        </view>
+   
+      <view class="weui-cell">
+       <view class="weui-cell__hd">
+        <view class="weui-label">模式:</view>
+      </view>
+      <view class="weui-cell__bd">
+       <radio-group bindchange="radioChange">
+        <label class="" wx:for="{{radioItems}}" wx:key="{{item.value}}">
+        {{item.name}}
+        <radio  value="{{item.value}}" checked="{{item.checked}}" />
       </label>
-    </radio-group>
+      </radio-group>
+      </view>
+     
+      </view>
+      
+   
   </view>
 
   <!--end-->
@@ -34,7 +42,7 @@
   <!--start-->
   <view class="weui-cells__title weui-flex" bindtap="chooselocation">
     <view class="weui-flex__item">选择出发地和目的地</view>
-    <view style="text-align:right;" class="weui-flex__item">选择详细位置</view>
+    <view style="text-align:right;" class="weui-flex__item">{{addressname}}</view>
   </view>
   <view class="weui-cells weui-cells_after-title">
     <view class="weui-cell weui-cell_select">
