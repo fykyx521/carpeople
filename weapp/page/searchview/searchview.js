@@ -152,12 +152,12 @@ Page({
 				if (item.get('lon') != 0 && item.get('lat') != 0) {
 					addr = '查看位置';
 					if (location&&itemlocation) {
-						let km=parseInt(location.kilometersTo(itemlocation));
-						dis=km+"公里";
+						let km=Number(location.kilometersTo(itemlocation)).toFixed(1);
+						dis="距离"+km+"公里";
 						// item.set('dis',  km+'公里');
 					}
 				}
-				item.set('addr',dis);
+				item.set('km',dis);
 				item.set('addr', addr);
 
 				item.set('dis')
