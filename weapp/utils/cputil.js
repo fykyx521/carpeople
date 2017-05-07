@@ -81,10 +81,57 @@ function fromtostr(fromaddr,toaddr)
 {
    return mapdata[fromaddr] + '到' + mapdata[toaddr];
 }
+
+function showLoading(title,mask=true)
+{
+    if(wx.showLoding)
+    {
+        wx.showLoading({
+            title:title,
+            mask:true,
+        });
+    }
+    wx.showNavigationBarLoading();
+    
+}
+
+function hideLoading()
+{
+    if(wx.hideLoading)
+    {
+        wx.hideLoading();
+    }
+    wx.hideNavigationBarLoading();
+    
+}
+function navigateTo(path)
+{
+    return new Promise(function(resolve,reject){
+      wx.navigateTo({
+      url: path,
+      success: function(res){
+        // success
+         resolve(res);
+      },
+      fail: function(res) {
+        // fail
+         reject(res);
+      },
+      complete: function(res) {
+        // complete
+      }
+    })
+    });
+    
+}
+
 module.exports = {
   indexToAddr: indexToAddr,
   dateDiff:dateDiff,
   dateAfter:dateAfter,
   isToday:isToday,
   fromtostr:fromtostr,
+  showLoading,
+  hideLoading,
+  navigateTo
 }

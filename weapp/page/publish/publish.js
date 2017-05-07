@@ -1,6 +1,6 @@
 import Bmob from '../../utils/bmob';
 import common from '../../utils/common.js';
-import { indexToAddr } from '../../utils/cputil';
+import { indexToAddr, showLoading, hideLoading,navigateTo } from '../../utils/cputil';
 Page({
     data: {
         showTopTips: false,
@@ -18,8 +18,10 @@ Page({
 
         peoplenum: 1,
         phone: '',
-        lat:0,
-        lon:0,
+        lat: 0,
+        lon: 0,
+
+        cptype: 1,
 
 
         startdate: "2016-09-01",
@@ -34,36 +36,36 @@ Page({
         tocity: ["临县", "太原", "离石"],
         toindex: 1,
         ftype: true, //默认车找人
-        addressname:'选择详细位置' 
+        addressname: '选择详细位置'
     },
     onLoad(option) {
-        
+
         let date = new Date();
-        let startdate = date.getFullYear()+'-'+(date.getMonth()+1) + '-' + date.getDate();
-        console.log(option.fromindex,)
-        this.setData({ startdate: startdate,fromindex:option.fromindex,toindex:option.toindex });
-        
+        let startdate = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+        console.log(option.fromindex, )
+        this.setData({ startdate: startdate, fromindex: option.fromindex, toindex: option.toindex });
+
         wx.setNavigationBarTitle({
-          title: '发布拼车信息',
-          success: function(res) {
-            // success
-          }
+            title: '发布拼车信息',
+            success: function (res) {
+                // success
+            }
         })
-        let that=this;
+        let that = this;
         wx.getLocation({
-          type: 'gcj02', // 默认为 wgs84 返回 gps 坐标，gcj02 返回可用于 wx.openLocation 的坐标
-          success: function(res){
-             that.setData({
-                 lat:res.latitude,  
-                 lon:res.longitude
-             })
-          },
-          fail: function(res) {
-            // fail
-          },
-          complete: function(res) {
-            // complete
-          }
+            type: 'gcj02', // 默认为 wgs84 返回 gps 坐标，gcj02 返回可用于 wx.openLocation 的坐标
+            success: function (res) {
+                that.setData({
+                    lat: res.latitude,
+                    lon: res.longitude
+                })
+            },
+            fail: function (res) {
+                // fail
+            },
+            complete: function (res) {
+                // complete
+            }
         })
     },
     //出发地
@@ -116,13 +118,14 @@ Page({
 
 
     radioChange: function (e) {
-        console.log('radio发生change事件，携带value值为：', e.detail.value);
+
         var radioItems = this.data.radioItems;
         for (var i = 0, len = radioItems.length; i < len; ++i) {
             radioItems[i].checked = radioItems[i].value == e.detail.value;
         }
         this.setData({
-            radioItems: radioItems
+            radioItems: radioItems,
+            cptype: e.detail.value
         });
     },
 
@@ -133,91 +136,92 @@ Page({
         });
     },
     bindsubmit: function (e) {
-        
+
         let detail = e.detail.value;
-        let phone=detail.phone;
-        if(this.data.fromindex==this.data.toindex)
-        {
-            wx.showToast({title:'出发地目的地不能相同'});
+        let phone = detail.phone;
+        if (this.data.fromindex == this.data.toindex) {
+            wx.showToast({ title: '出发地目的地不能相同' });
             return;
         }
-        if(!this.checkphone(phone))
-        {
+        if (!this.checkphone(phone)) {
             return;
         }
-        
+
         let findtype = this.ftype ? 1 : 0;
-        
+
         let fromaddr = indexToAddr(this.data.fromindex);
         let toaddr = indexToAddr(this.data.toindex);
-        let startdate=this.getStartDate();
+        let startdate = this.getStartDate();
         let CarPeople = Bmob.Object.extend("icp");
         let car = new CarPeople();
-        let current=Bmob.User.current();
-        var point = new Bmob.GeoPoint({latitude: this.data.lat, longitude: this.data.lon});
+        let current = Bmob.User.current();
+        var point = new Bmob.GeoPoint({ latitude: this.data.lat, longitude: this.data.lon });
 
-        car.set("cptype", Number(findtype));
+        car.set("cptype", Number(this.data.cptype));
         car.set('from', Number(fromaddr));
         car.set('to', Number(toaddr));
         car.set("peoplenum", Number(this.data.peoplenum));
         car.set("phone", Number(detail.phone));
         car.set('startdate', startdate);
         car.set('starttime', startdate.getTime());
-        car.set('datafrom',4);
-        car.set('lat',this.data.lat);
-        car.set('lon',this.data.lon);
-        car.set('parent',current);
-        car.set('own',current.id);
-        car.set('geopoint',point);
+        car.set('datafrom', 4);
+        car.set('lat', this.data.lat);
+        car.set('lon', this.data.lon);
+        car.set('parent', current);
+        car.set('own', current.id);
+        car.set('geopoint', point);
         // console.log(detail.mobile + ':' + detail.startdate);
-        car.save(null, {
-            success() {
-               
-            }
-        })
+        showLoading();
+        car.save(null).then(() => {
+            wx.showToast({
+                title: '发布成功',
+                icon: 'success',
+                duration: 2000
+            })
+            hideLoading();
+            navigateTo('/page/searchview/searchview?fromaddr='+fromaddr+'&toaddr='+toaddr).then((res)=>{console.log('发布跳转')});
+        });
     },
-    getStartDate()
-    {
-        let datestr=this.data.startdate+' '+this.data.starttime;
-        let pubdate=new Date(Date.parse(datestr.replace(/-/g, "/")));
+    getStartDate() {
+        let datestr = this.data.startdate + ' ' + this.data.starttime;
+        let pubdate = new Date(Date.parse(datestr.replace(/-/g, "/")));
         return pubdate;
     },
     //
-    chooselocation(e)
-    {
-      
-        let that=this;
+    chooselocation(e) {
+
+        let that = this;
         wx.chooseLocation({
-          success: function(res){
-            that.setData({
-                 lat:res.latitude,  
-                 lon:res.longitude,
-                 addressname:res.name
-             });
-          },
-          fail: function(res) {
-            // fail
-            console.log(res);
-          },
-          complete: function(res) {
-            // complete
-            console.log(res);
-          }
+            success: function (res) {
+                that.setData({
+                    lat: res.latitude,
+                    lon: res.longitude,
+                    addressname: res.name
+                });
+            },
+            fail: function (res) {
+                // fail
+                console.log(res);
+            },
+            complete: function (res) {
+                // complete
+                console.log(res);
+            }
         })
     },
     checkphone(phone) {
-		if (phone == '') {
-			// this.topTips('电话号码不能为空',1500);
-			common.showTip('电话号码不能为空');
-			return false;
-		}
-		let reg = /^1[3|4|5|8|7][0-9]\d{4,8}$/;
-		if (!reg.test(phone.toString())) {
-			// this.topTips('电话号码格式不正确', 1500);
-			common.showTip('电话号码格式不正确');
-			return false;
-		}
-		return true;
-	}
+        if (phone == '') {
+            // this.topTips('电话号码不能为空',1500);
+            common.showTip('电话号码不能为空');
+            return false;
+        }
+        let reg = /^1[3|4|5|8|7][0-9]\d{4,8}$/;
+        if (!reg.test(phone.toString())) {
+            // this.topTips('电话号码格式不正确', 1500);
+            common.showTip('电话号码格式不正确');
+            return false;
+        }
+        return true;
+    }
 
 });
