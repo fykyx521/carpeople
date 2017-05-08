@@ -16,12 +16,18 @@ Page({
                      avatarUrl:avatarUrl
                   })
           },
-          fail: function(res) {
+          fail: function(res) { 
             // fail
           },
           complete: function(res) {
             // complete
           }
         })
+    },
+    publish(e)
+    {
+        wx.redirectTo({
+          url: '/page/publish/publish?fromindex=1&toindex=0'
+        });
     }
 })

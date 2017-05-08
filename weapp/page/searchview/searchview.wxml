@@ -23,14 +23,13 @@
                 </view>
                 <view class="weui-media-box__desc">{{item.qqtext}}</view>
                 <view class="weui-media-box__info">
-                  <view class="weui-media-box__info__meta">发布于{{item.datediff}}</view>
-                  <view class="weui-media-box__info__meta">来源:{{item.peoplenum}}</view>
+                  <view class="weui-media-box__info__meta">{{item.datediff}}发布</view>
+                  <view class="weui-media-box__info__meta">来源:{{item.datafrom}}</view>
                   <view class="weui-media-box__info__meta weui-media-box__info__meta_extra" wx:if="{{item.addr}}"
                    data-datafrom="{{item.datafrom}}" 
                    data-lat="{{item.lat}}"
                    data-lon="{{item.lon}}"
                    bindtap="openlocation">{{item.km}}
-                   <image src="../../images/location.png" style="display:inline-block; width:25rpx;height:25rpx;"  ></image>
                    </view>
                 </view>
               </view>

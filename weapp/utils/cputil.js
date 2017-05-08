@@ -129,7 +129,7 @@ function navigateTo(path)
 }
 function redirectTo(path)
 {
-    return new Promise(function(resolv,reject){
+  return new Promise(function (resolve,reject){
         wx.redirectTo({
           url: path,
           success: function(res){

@@ -8,36 +8,7 @@
     "page/my/publish/publish",
     "page/my/feedback/feedback",
     "page/my/about/about",
-    "example/index",
-
-
-    "example/button/button",
-    "example/list/list",
-    "example/input/input",
-    "example/slider/slider",
-    "example/uploader/uploader",
-    "example/article/article",
-    "example/badge/badge",
-    "example/flex/flex",
-    "example/footer/footer",
-    "example/gallery/gallery",
-    "example/grid/grid",
-    "example/icons/icons",
-    "example/loadmore/loadmore",
-    "example/panel/panel",
-    "example/preview/preview",
-    "example/progress/progress",
-
-    "example/actionsheet/actionsheet",
-    "example/dialog/dialog",
-    "example/msg/msg",
-    "example/msg/msg_success",
-    "example/msg/msg_fail",
-    "example/picker/picker",
-    "example/toast/toast",
-    "example/navbar/navbar",
-    "example/tabbar/tabbar",
-    "example/searchbar/searchbar"
+    "page/my/free/free"
   ],
   "tabBar": {
     "color": "#7A7E83",
@@ -48,24 +19,16 @@
    
       {
       "pagePath": "page/search/search",
-      "iconPath": "images/publish.png",
-      "selectedIconPath": "images/publishs.png",
+      "iconPath": "images/search.png",
+      "selectedIconPath": "images/searchs.png",
       "text": "搜索"
     },
     {
       "pagePath":  "page/my/my",
-      "iconPath": "images/publish.png",
-      "selectedIconPath": "images/publishs.png",
-      "text": "发布"
-    },
-     
-     {
-      "pagePath": "example/index",
-      "iconPath": "images/publish.png",
-      "selectedIconPath": "images/publishs.png",
-      "text": "发布"
+      "iconPath": "images/my.png",
+      "selectedIconPath": "images/mys.png",
+      "text": "我"
     }
-    
     ]
   },
   "window": {
