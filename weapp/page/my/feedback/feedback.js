@@ -2,7 +2,7 @@ import api from '../../../utils/api.js';
 Page({
 
 	data:{
-
+		 title:'',
 	},
 	onReady()
 	{
@@ -13,10 +13,10 @@ Page({
 		  }
 		});
 	},
-	publish(e)
+	bindsubmit:function(e)
 	{
 		console.log("publish feedback");
-		let title=e.detial.value.title;
+		let title=e.detail.value.title;
 		let content=e.detail.value.content;
 		if(content=='')
 		{

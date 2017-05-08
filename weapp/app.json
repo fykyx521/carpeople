@@ -7,6 +7,7 @@
     "page/my/my",
     "page/my/publish/publish",
     "page/my/feedback/feedback",
+    "page/my/about/about",
     "example/index",
 
 
@@ -57,6 +58,7 @@
       "selectedIconPath": "images/publishs.png",
       "text": "发布"
     },
+     
      {
       "pagePath": "example/index",
       "iconPath": "images/publish.png",
@@ -68,7 +70,7 @@
   },
   "window": {
     "navigationBarTextStyle": "black",
-    "navigationBarTitleText": "0358", 
+    "navigationBarTitleText": "临县人生", 
     "navigationBarBackgroundColor": "#f8f8f8",
     "backgroundColor": "#f8f8f8",
     "enablePullDownRefresh":false

@@ -1,5 +1,6 @@
-import { fromtostr } from '../../../utils/cputil';
+import { fromtostr,showToast } from '../../../utils/cputil';
 import Bmob from '../../../utils/bmob';
+import api from '../../../utils/api.js';
 var sliderWidth = 96;
 let skip=0;
 let hasmore=true;
@@ -57,6 +58,15 @@ Page({
 			nodatatxt:nodatatxt
 		});
 	},
+	delcp(e)
+	{
+		let itemid = e.currentTarget.dataset.id;
+		console.log('del'+itemid);
+		api.delsafe('icp',itemid).then(()=>{
+			showToast('删除成功');
+			this.reload();  
+		});
+	},
 	load()
 	{   
 		if(!hasmore)
@@ -72,6 +82,7 @@ Page({
 		query.equalTo('own',current.id);
 		query.equalTo("cptype", this.data.cptype);
 		// query.ascending("startdate");
+		query.doesNotExist("deletedAt");
 		query.descending("updatedAt");
 		let nlist=this.data.list;
 		query.find().then(results=>{

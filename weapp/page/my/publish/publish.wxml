@@ -22,11 +22,10 @@
                 <view class="weui-media-box__info">
                   <view class="weui-media-box__info__meta">发布于:{{item.createdAt}}</view>
                   <view class="weui-media-box__info__meta">人数:{{item.peoplenum}}</view>
-                  <view class="weui-media-box__info__meta weui-media-box__info__meta_extra"
-                   data-datafrom="{{item.datafrom}}" 
-                   data-lat="{{item.lat}}"
-                   data-lon="{{item.lon}}"
-                   >{{item.addr}}</view>
+                  <view class="weui-media-box__info__meta weui-media-box__info__meta_extra  weui-media-box__info__operate" bindtap="delcp" data-id="{{item.objectId}}">
+                     <text class="del" >删除</text>
+                     <icon type="clear" size="12" />
+                  </view>  
                 </view>
               </view>
             </block>

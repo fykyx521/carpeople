@@ -1,6 +1,6 @@
 import Bmob from '../../utils/bmob';
 import common from '../../utils/common.js';
-import { indexToAddr, showLoading, hideLoading,navigateTo } from '../../utils/cputil';
+import { indexToAddr, showLoading, hideLoading,navigateTo,redirectTo } from '../../utils/cputil';
 Page({
     data: {
         showTopTips: false,
@@ -179,7 +179,7 @@ Page({
                 duration: 2000
             })
             hideLoading();
-            navigateTo('/page/searchview/searchview?fromaddr='+fromaddr+'&toaddr='+toaddr).then((res)=>{console.log('发布跳转')});
+            redirectTo('/page/searchview/searchview?fromaddr='+fromaddr+'&toaddr='+toaddr).then((res)=>{console.log('发布跳转')},true);
         });
     },
     getStartDate() {

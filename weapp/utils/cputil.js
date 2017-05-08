@@ -102,7 +102,10 @@ function hideLoading()
         wx.hideLoading();
     }
     wx.hideNavigationBarLoading();
-    
+}
+function showToast(title)
+{
+    wx.showToast({title:title});
 }
 function navigateTo(path)
 {
@@ -124,6 +127,23 @@ function navigateTo(path)
     });
     
 }
+function redirectTo(path)
+{
+    return new Promise(function(resolv,reject){
+        wx.redirectTo({
+          url: path,
+          success: function(res){
+            resolve(res);
+          },
+          fail: function(res) {
+            reject(res);
+          },
+          complete: function(res) {
+            // complete
+          }
+        })
+    });
+}
 
 module.exports = {
   indexToAddr: indexToAddr,
@@ -133,5 +153,7 @@ module.exports = {
   fromtostr:fromtostr,
   showLoading,
   hideLoading,
-  navigateTo
+  navigateTo,
+  showToast,
+  redirectTo
 }

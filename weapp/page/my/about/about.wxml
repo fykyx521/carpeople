@@ -1,0 +1,13 @@
+
+
+<form bindsubmit="bindsubmit">
+  <view class="weui-cells__title">微信公众号:ii0358</view>
+  <view class="weui-cells weui-cells_after-title weui-flex">
+        <image src="../../../images/0358.jpg"  style="width:250rpx;height:250rpx;margin-left:250rpx;"></image>
+  </view>
+  <view class="weui-cells__title">小程序名:临县人生</view>
+  <view class="weui-cells weui-cells_after-title">
+     <image src="../../../images/0538wapp.jpg" style="width:250rpx;height:250rpx;margin-left:250rpx;"></image>
+  </view>
+  <button type="primary" form-type="submit" class="weui-btn weui-btn_primary">返回</button>
+</form>  

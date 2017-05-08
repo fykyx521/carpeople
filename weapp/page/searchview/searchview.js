@@ -1,5 +1,5 @@
 import Bmob from '../../utils/bmob';
-import { dateDiff, dateAfter, isToday, fromtostr } from '../../utils/cputil';
+import { dateDiff, dateAfter, isToday, fromtostr,redirectTo } from '../../utils/cputil';
 var sliderWidth = 96;
 let skip = 0;
 let hasmore = true;
@@ -130,6 +130,7 @@ Page({
 		query.greaterThanOrEqualTo('startdate', startdate);
 		query.ascending("startdate");
 		query.descending("updatedAt");
+		query.doesNotExist("deletedAt");
 
 		let location = this.getLocation();
 		console.log('location'+location);
@@ -237,20 +238,7 @@ Page({
 
 	},
 	goNav(path) {
-		wx.navigateTo({
-			url: path,
-			success: function (res) {
-				// success
-				console.log('success');
-			},
-			fail: function (res) {
-				// fail
-				console.log(res);
-			},
-			complete: function (res) {
-				// complete
-			}
-		})
+		redirectTo(path);
 	},
 	openlocation(e) {
 		let dataset = e.target.dataset;

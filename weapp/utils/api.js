@@ -7,7 +7,7 @@ function currentUser()
 function createObj(modelname,data={})
 {
     let obj=Bmob.Object.extend(modelname);
-    let keys=data.keys();
+    let keys=Object.keys(data);
     let result=new obj();
     for(let key of keys)
     {
@@ -15,8 +15,30 @@ function createObj(modelname,data={})
     }
     return result;
 }
+function del(modelname,objid)
+{
+     let delObj=Bmob.Object.extend(modelname);
+     var query = new Bmob.Query(delObj);
+     return query.get(objid).then((obj)=>{
+         console.log('getid');
+         return obj.destroy()
+    });
+    //  return query.delete()
+}
+function delsafe(modelname,objid)
+{
+     let delObj=Bmob.Object.extend(modelname);
+     var query = new Bmob.Query(delObj);
+     return query.get(objid).then((obj)=>{
+         obj.set('deletedAt',new Date())
+         return obj.save();
+    });
+    //  return query.delete()
+}
 
 export default {
     currentUser,
-    createObj
+    createObj,
+    del,
+    delsafe
 }
