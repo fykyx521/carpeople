@@ -170,8 +170,11 @@ Page({
         car.set('parent', current);
         car.set('own', current.id);
         car.set('geopoint', point);
+
+        
         // console.log(detail.mobile + ':' + detail.startdate);
         showLoading();
+        this.clearToday();
         car.save(null).then(() => {
             wx.showToast({
                 title: '发布成功',
@@ -182,12 +185,32 @@ Page({
             redirectTo('/page/searchview/searchview?fromaddr='+fromaddr+'&toaddr='+toaddr).then((res)=>{console.log('发布跳转')},true);
         });
     },
+    //清除今天已发送的
+    clearToday()
+    {
+      let nquery = api.query('icp');
+      let today = this.getTodayDate();
+      query.greaterThanOrEqualTo('startdate', today);
+      query.limit(1);
+      query.skip(0);
+      query.find().then(results=>{
+         results.forEach(item=>{item.destory()});
+      });
+    },
     getStartDate() {
         let datestr = this.data.startdate + ' ' + this.data.starttime;
         let pubdate = new Date(Date.parse(datestr.replace(/-/g, "/")));
         return pubdate;
     },
-    //
+    //获取今天的日期
+    getTodayDate()
+    {
+       let date=new Date();
+       date.setHours(0);
+       date.setMinutes(0);
+       date.setSeconds(0);
+       return date;
+    },
     chooselocation(e) {
 
         let that = this;

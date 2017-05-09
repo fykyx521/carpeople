@@ -35,10 +35,17 @@ function delsafe(modelname,objid)
     });
     //  return query.delete()
 }
+function query(modelname,where)
+{
+   let Obj = Bmob.Object.extend(modelname);
+   var query = new Bmob.Query(Obj);
+   return query;
+}
 
 export default {
     currentUser,
     createObj,
     del,
-    delsafe
+    delsafe,
+    query
 }
