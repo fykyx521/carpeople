@@ -42,7 +42,8 @@ Page({
 
         let date = new Date();
         let startdate = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
-        console.log(option.fromindex, )
+        // console.log(option.fromindex, )
+        
         this.setData({ startdate: startdate, fromindex: option.fromindex, toindex: option.toindex });
 
         wx.setNavigationBarTitle({
