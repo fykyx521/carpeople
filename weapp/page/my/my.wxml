@@ -14,7 +14,7 @@
            
 </view>
 
-<view class="weui-cells__title"></view>
+<view class="weui-cells__title">每天只能发送一条,重复发送只显示最后发布的一条</view>
         <view class="weui-cells weui-cells_after-title">
             <navigator url="/page/my/publish/publish" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
                 <view class="weui-cell__bd">我发布的</view>
@@ -39,7 +39,9 @@
             </navigator>
   </view>       
 
-
-  <button type="primary" bindtap="publish" class="weui-btn footerbutton no-radius">发布拼车</button> 
+<view class="buttom">
+<button type="primary" bindtap="publish" class="weui-btn  no-radius">发布拼车</button> 
+</view>
+  
 
 

@@ -1,5 +1,6 @@
 import Bmob from '../../utils/bmob';
 import common from '../../utils/common.js';
+import api from '../../utils/api.js';
 import { indexToAddr, showLoading, hideLoading,navigateTo,redirectTo } from '../../utils/cputil';
 Page({
     data: {
@@ -42,8 +43,7 @@ Page({
 
         let date = new Date();
         let startdate = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
-        // console.log(option.fromindex, )
-        
+        console.log(option.fromindex, )
         this.setData({ startdate: startdate, fromindex: option.fromindex, toindex: option.toindex });
 
         wx.setNavigationBarTitle({
@@ -175,7 +175,7 @@ Page({
         
         // console.log(detail.mobile + ':' + detail.startdate);
         showLoading();
-        this.clearToday();
+        this.clearToday(current.id);
         car.save(null).then(() => {
             wx.showToast({
                 title: '发布成功',
@@ -186,16 +186,26 @@ Page({
             redirectTo('/page/searchview/searchview?fromaddr='+fromaddr+'&toaddr='+toaddr).then((res)=>{console.log('发布跳转')},true);
         });
     },
+    bindsubmit22(e){
+       let current = Bmob.User.current();
+       this.clearToday(current.id);
+    },
     //清除今天已发送的
-    clearToday()
+    clearToday(userid)
     {
-      let nquery = api.query('icp');
+      let query = api.query('icp');
       let today = this.getTodayDate();
-      query.greaterThanOrEqualTo('startdate', today);
+      query.equalTo("own", userid);
+      query.greaterThanOrEqualTo('createdAt', today);
+      query.doesNotExist("deletedAt");
       query.limit(1);
       query.skip(0);
       query.find().then(results=>{
-         results.forEach(item=>{item.destory()});
+        //  console.log('results'+results);
+         results.forEach((item)=>{
+           item.set('deletedAt',new Date());
+           item.save();
+         });
       });
     },
     getStartDate() {

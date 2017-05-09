@@ -2,10 +2,13 @@
 
 
 
+.bottom{
+  position: fixed;
+  bottom: 0px;
+}
 
 .no-radius{
     border-radius:0rpx;
-    position: fixed;
     bottom: 0px;
     width: 100%;
 }

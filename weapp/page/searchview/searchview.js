@@ -57,6 +57,7 @@ Page({
 			activeIndex: e.currentTarget.id,
 			cptype: e.currentTarget.id == 1 ? 0 : 1
 		});
+    console.log(e.currentTarget.offsetLeft);
 		this.reload();
 	},
 	getTitle() {
@@ -64,12 +65,11 @@ Page({
 	},
 	pubtext(item) {
     let pnum=item.get('peoplenum');
-    let txt = this.data.cptype ? "[车" + pnum + "找人]" : "[" + pnum +"人找车]";
-		txt += ","+this.getTitle();
-
+		let txt = this.data.cptype ? "车找"+pnum+"人" : pnum+"人找车";
+		txt += this.getTitle();
+    // let pubdate = new Date(Date.parse(item.updatedAt.replace(/-/g, "/")))
 		let qqtext = item.get('qqtext') + "";
 		let startdate = new Date(Date.parse(item.get('startdate').replace(/-/g, "/")));
-
 		if (isToday(startdate)) {
 			qqtext = qqtext.replace('明天', '');
 			qqtext = qqtext.replace('明', '');
@@ -147,11 +147,10 @@ Page({
 				let pubdate = new Date(Date.parse(item.updatedAt.replace(/-/g, "/")))
 				// console.log('pubdate'+item.updatedAt);
 				let itemlocation = item.get('geopoint');
-				console.log(itemlocation);
+        item.set('datafrom', item.get('datafrom') == 4 ? '临县人生' : '公众号ii0358');
 				let dis='';
 				item.set('qqtext', that.pubtext(item));
 				item.set('datediff', dateDiff(pubdate.getTime()));
-        item.set('datafrom',item.get('datafrom')==4?'临县人生':'公众号ii0358');
 				let addr = '';
 				if (item.get('lon') != 0 && item.get('lat') != 0) {
 					addr = '查看位置';
@@ -215,7 +214,12 @@ Page({
 		// console.log(option);
 		let fromaddr = option.fromaddr
 		let toaddr = option.toaddr;
-		let cptype = option.cptype ? option.cptype : 1;
+		let cptype = 1;
+    if(option.cptype)
+    {
+       cptype=option.cptype==1?1:0;
+    }
+    
 		fromindex = option.fromindex;
 		toindex = option.toindex;
 		this.setData({
