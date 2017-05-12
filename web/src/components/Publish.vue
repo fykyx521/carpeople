@@ -225,7 +225,15 @@
     			startdate.setMinutes(0);
     			startdate.setSeconds(0);
     			startdate.setHours(this.starttime);
-    			console.log(startdate);
+    			if(this.startdate==2)//this.startdate select model
+    			{
+    				startdate.setDate(startdate.getDate() + 1);
+    			}
+    			if(this.startdate==3)
+    			{
+    				startdate.setDate(startdate.getDate() + 2);
+    			}
+    			// console.log(startdate);
     			// let startdate=moment().hour(this.starttime).minute(0).second(0).toDate();
     			cp.set('startdate',startdate);
     			cp.set('starttime',startdate.getTime());
