@@ -147,10 +147,11 @@ Page({
 				let pubdate = new Date(Date.parse(item.updatedAt.replace(/-/g, "/")))
 				// console.log('pubdate'+item.updatedAt);
 				let itemlocation = item.get('geopoint');
-        item.set('datafrom', item.get('datafrom') == 4 ? '临县人生' : '公众号ii0358');
+        
 				let dis='';
 				item.set('qqtext', that.pubtext(item));
 				item.set('datediff', dateDiff(pubdate.getTime()));
+        item.set('datafrom', item.get('datafrom') == 4 ? '临县人生' : '公众号ii0358');
 				let addr = '';
 				if (item.get('lon') != 0 && item.get('lat') != 0) {
 					addr = '查看位置';

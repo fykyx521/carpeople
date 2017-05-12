@@ -177,7 +177,7 @@
 			{
 				if(item.get('datafrom')==1)
 				{
-					return 'QQ群';
+					return '公众号ii0358';
 				}
 				return '公众号ii0358';
 			},
