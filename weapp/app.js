@@ -1,5 +1,7 @@
-import login from 'utils/login.js';
 var Bmob = require('utils/bmob.js');
+import login from 'utils/login.js';
+import cputil from 'utils/cputil.js';
+import api from 'utils/api.js';
 App({
     onLaunch: function () {
         
@@ -19,11 +21,27 @@ App({
           complete: function(res) {
             // complete
           }
-        })
+        });
+        
+        let query=api.query('icpconfig');
+        query.ascending("addrorder");
+        query.find().then(results=>{
+            let addrlist={};
+            let addrkv=[];
+            results.forEach((item,index)=>{
+                let addrname = item.get('addrname');
+                Object.defineProperty(addrlist, item.get('addrid') + '', { value: addrname});
+                // addrlist[item.get('addrid')]
+                addrkv.push({addrname:index});
+            });
+            console.log(addrlist);
+            this.globalData.addrlist=addrlist;
+            this.globalData.addrkv=addrkv;
+        });
     },
     onShow: function () {
-        // console.log('appshow');
-       
+         console.log('appshow');
+         
 
 
     },
@@ -32,7 +50,10 @@ App({
     },
     globalData: {
         hasLogin: false,
-        currentLocation:null
+        currentLocation:null,
+        addrlist: { 141124: "临县", 140100: "太原", 141102: "离石", },
+        addrkv:[141124,140100,141102]
+
     }
 });
 

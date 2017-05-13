@@ -6,6 +6,7 @@ import Publish from '@/components/Publish.vue'
 
 import Search from '@/components/Search.vue'
 import SearchView from '@/components/SearchView.vue'
+import Free from '@/components/Free.vue'
 
 // import Login from '@/components/Login.vue'
 // import Register from '@/components/Register.vue'
@@ -31,6 +32,11 @@ let routemap={
       path: '/publish',
       name: 'publish',
       component: Publish
+    },
+    {
+       path:'/free',
+       name:'free',
+       component:Free
     }
     // {
     //   path: '/login',

@@ -1,4 +1,5 @@
 import {indexToAddr} from '../../utils/cputil';
+let app=getApp();
 Page({
     data: {
 

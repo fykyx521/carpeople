@@ -1,4 +1,4 @@
-
+import weui from 'weui.js';
 var dateDiff = function(hisTime,nowTime){
         var now =nowTime?nowTime:new Date().getTime(),
             diffValue = now - hisTime,
@@ -55,11 +55,22 @@ var dateDiff = function(hisTime,nowTime){
      }
      return false;
   }
+  function topTips(msg,option=1500)
+  {
+     return weui.topTips(msg,option);
+  }
+
+  function indexToAddr()
+  {
+    
+  }
+
 
   export default {
   	methods:{
   		dateDiff,
       dateAfter,
-      isToday
+      isToday,
+      topTips
   	}
   }

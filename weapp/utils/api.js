@@ -20,7 +20,7 @@ function del(modelname,objid)
      let delObj=Bmob.Object.extend(modelname);
      var query = new Bmob.Query(delObj);
      return query.get(objid).then((obj)=>{
-         console.log('getid');
+        //  console.log('getid');
          return obj.destroy()
     });
     //  return query.delete()

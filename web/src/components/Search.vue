@@ -15,6 +15,9 @@
 						<option value="140100">太原</option>
 						<option value="141102">离石</option>
 					</select>
+					<!-- <picker v-on:bindchange="bindfromchange" :value="fromindex" :range="fromcounty" class="weui-select">
+          				<view class="weui-select weui-select_in-select-after"></view>
+        			</picker> -->
 				</div>
 			</div>
 
@@ -40,11 +43,21 @@
 </div>	
 </template>
 <script>
+	import picker from './items/picker.vue';
 	export default {
 		name:"search",
 		data ()
 		{
-			return {from:141124,to:140100,cptype:1}
+			return {
+					from:141124,
+					to:140100,
+					cptype:1,
+					fromindex:0,
+					fromcounty:[{label:'临县',value:0},{label:'太原',value:1},{label:'离石',value:2}]
+				}
+		},
+		components:{
+			picker,
 		},
 		created()
 		{
@@ -67,6 +80,10 @@
 		},
 		methods:{
 
+			bindfromchange(e)
+			{
+				let value=e.detail.value;
+			},
 			changefromto ()
 			{
 				let oldfrom=this.from;

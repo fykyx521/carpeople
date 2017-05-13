@@ -6,11 +6,7 @@ let hasmore = true;
 let fromindex = 0;
 let toindex = 1;
 
-const mapdata = {
-	'141124': '临县',
-	'140100': '太原',
-	'141102': '离石'
-};
+
 Page({
 	data: {
 		list: [],

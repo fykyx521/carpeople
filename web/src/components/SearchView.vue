@@ -208,7 +208,7 @@
 				var query = new Bmob.Query(ICP);
 				var startdate=new Date();
 				// var hours=startdate.getHours();
-				startdate.setHours(startdate.getHours()-1);	
+				startdate.setHours(startdate.getHours()-2);	
 				startdate.setMinutes(0);
 				startdate.setSeconds(0);
 				// query.greaterThanOrEqualTo("startDate",startdate);

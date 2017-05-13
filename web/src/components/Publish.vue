@@ -113,6 +113,16 @@
 					</select>
 				</div>
 			</div>
+
+			<div class="weui-cell weui-cell_switch">
+                <div class="weui-cell__bd"><a @click="tofree">免责声明</a></div>
+                <div class="weui-cell__ft">
+                    <label for="switchCP" class="weui-switch-cp">
+                        <input id="switchCP" class="weui-switch-cp__input" type="checkbox" v-model="free">
+                        <div class="weui-switch-cp__box"></div>
+                    </label>
+                </div>
+            </div>
 			<!-- <div class="weui-cell weui-cell_select weui-cell_select-after">
 				<div class="weui-cell__hd">
 					<label for="" class="weui-label">价格(每人)</label>
@@ -149,6 +159,7 @@
 				unitprice:0,
 				startdate:1,
 				starttime:12,
+				free:true,
 			}
 		},
 		computed:{
@@ -202,11 +213,22 @@
                     this.topTips('电话号码格式不正确',1500);
                     return false;
                 }
+                if(this.from==this.to)
+                {
+                	this.topTips("出发地目的地不能相同",1500);
+                	return;
+                }
+                if(!this.free)
+                {
+                	this.topTips('请同意免责声明');
+                	return;
+                }
                 return true;
 			},
-			topTips (msg)
+			
+			tofree()
 			{
-				 alert(msg);
+				this.$router.push({name:'free'});
 			},
 			publish ()
 			{
@@ -245,6 +267,7 @@
     			// }
     			cp.save().then(()=>{
     				this.$router.push({name:'searchview',params:{from:this.from,to:this.to}})
+    				topTips("发布成功");
     				console.log('添加成功');
     			},error=>{
     				console.log(error);

@@ -15,7 +15,7 @@ Page({
 	},
 	bindsubmit:function(e)
 	{
-		console.log("publish feedback");
+		// console.log("publish feedback");
 		let title=e.detail.value.title;
 		let content=e.detail.value.content;
 		if(content=='')
