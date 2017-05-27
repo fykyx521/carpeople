@@ -9,8 +9,17 @@ import {
   AppRegistry,
   StyleSheet,
   Text,
-  View
+  View,
+  Dimensions,
+  Button
 } from 'react-native';
+
+import { StackNavigator } from 'react-navigation';
+// import { Button } from 'react-native-elements'
+
+
+let {height, width} = Dimensions.get('window');
+
 
 export default class reactapp extends Component {
   render() {
@@ -20,8 +29,10 @@ export default class reactapp extends Component {
           Welcome to React Native!
         </Text>
         <Text style={styles.instructions}>
-          To get started, edit index.android.js
+          To get started, edit index.android.js1
         </Text>
+        <Button style={styles.btn}
+  title='BUTTON213' />
         <Text style={styles.instructions}>
           Double tap R on your keyboard to reload,{'\n'}
           Shake or press menu button for dev menu
@@ -31,12 +42,19 @@ export default class reactapp extends Component {
   }
 }
 
+const SimpleApp = StackNavigator({
+  Home: { screen: reactapp },
+});
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
+  },
+  btn:{
+    width:width,
   },
   welcome: {
     fontSize: 20,
@@ -50,4 +68,4 @@ const styles = StyleSheet.create({
   },
 });
 
-AppRegistry.registerComponent('reactapp', () => reactapp);
+AppRegistry.registerComponent('reactapp', () => SimpleApp);
