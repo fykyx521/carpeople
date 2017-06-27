@@ -9,27 +9,45 @@ import {
   AppRegistry,
   StyleSheet,
   Text,
-  View
+  View,
+  Picker
 } from 'react-native';
 
+import {Button,FormLabel, FormInput } from 'react-native-elements';
+
+import { StackNavigator } from 'react-navigation';
+
 export default class reactapp extends Component {
+   constructor(props) {
+    super(props);
+    this.state = { language:'java' };
+
+  }
   render() {
     return (
       <View style={styles.container}>
+        
         <Text style={styles.welcome}>
-          Welcome to React Native!
+           拼车搜索
         </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.ios.js
-        </Text>
-        <Text style={styles.instructions}>
-          Press Cmd+R to reload,{'\n'}
-          Cmd+D or shake for dev menu
-        </Text>
+        
+        <FormLabel>出发地</FormLabel>
+<FormInput></FormInput>
+
+<FormLabel>目的地</FormLabel>
+<FormInput/>
+
+
+        <Button title='搜索'></Button>
+
       </View>
     );
   }
 }
+
+const app = StackNavigator({
+  Home: { screen: reactapp },
+});
 
 const styles = StyleSheet.create({
   container: {
@@ -38,6 +56,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
   },
+ 
+
   welcome: {
     fontSize: 20,
     textAlign: 'center',
@@ -50,4 +70,4 @@ const styles = StyleSheet.create({
   },
 });
 
-AppRegistry.registerComponent('reactapp', () => reactapp);
+AppRegistry.registerComponent('reactapp', () => app);
